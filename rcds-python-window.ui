@@ -1,0 +1,540 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>640</width>
+    <height>480</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>640</width>
+    <height>480</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>RCDS Tool</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QTabWidget" name="tabWidget">
+        <property name="currentIndex">
+         <number>0</number>
+        </property>
+        <widget class="QWidget" name="SensorTab">
+         <attribute name="title">
+          <string>Sensor Control</string>
+         </attribute>
+         <layout class="QGridLayout" name="gridLayout_2">
+          <item row="0" column="0">
+           <layout class="QVBoxLayout" name="verticalLayout_2">
+            <item>
+             <widget class="QRadioButton" name="SerialRadioButton">
+              <property name="text">
+               <string>Serial Connection</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QRadioButton" name="BLERadioButton">
+              <property name="text">
+               <string>BLE Connection</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="ScanDevicesButton">
+              <property name="text">
+               <string>Scan Devices</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QComboBox" name="DeviceListComboBox"/>
+            </item>
+            <item>
+             <widget class="QPushButton" name="DeviceConnectButton">
+              <property name="text">
+               <string>Connect</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="verticalSpacer">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+          <item row="0" column="1">
+           <layout class="QVBoxLayout" name="verticalLayout_7">
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout">
+              <item>
+               <layout class="QGridLayout" name="gridLayout_6">
+                <item row="0" column="0">
+                 <widget class="QLabel" name="IDLabel">
+                  <property name="text">
+                   <string>ID</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="QLineEdit" name="IDLineEdit"/>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QLabel" name="LocLabel">
+                  <property name="text">
+                   <string>Location</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="QLineEdit" name="LocLineEdit"/>
+                </item>
+                <item row="2" column="0">
+                 <widget class="QLabel" name="DirLabel">
+                  <property name="text">
+                   <string>Direction</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="1">
+                 <widget class="QLineEdit" name="DirLineEdit"/>
+                </item>
+                <item row="3" column="0">
+                 <widget class="QLabel" name="CommentLabel">
+                  <property name="text">
+                   <string>Comment</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="1">
+                 <widget class="QLineEdit" name="CommentLineEdit"/>
+                </item>
+                <item row="4" column="0">
+                 <widget class="QLabel" name="StateLabel">
+                  <property name="text">
+                   <string>State</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="4" column="1">
+                 <widget class="QLineEdit" name="StateLineEdit"/>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <layout class="QVBoxLayout" name="verticalLayout_5">
+                <item>
+                 <widget class="QPushButton" name="SetButton">
+                  <property name="text">
+                   <string>Set Parameters</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="StartButton">
+                  <property name="text">
+                   <string>Start Running</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="StopButton">
+                  <property name="text">
+                   <string>Stop Running</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="SaveButton">
+                  <property name="text">
+                   <string>Save Data</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="ResetButton">
+                  <property name="text">
+                   <string>Reset Device</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="QLabel" name="TerminalLabel">
+              <property name="text">
+               <string>Raw Terminal</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QTextEdit" name="TerminalTextEdit">
+              <property name="readOnly">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+         <zorder>verticalLayoutWidget_2</zorder>
+         <zorder>verticalLayoutWidget_4</zorder>
+         <zorder>verticalLayoutWidget_4</zorder>
+         <zorder>verticalLayoutWidget_5</zorder>
+        </widget>
+        <widget class="QWidget" name="FilterTab">
+         <attribute name="title">
+          <string>Filtering and Compilation</string>
+         </attribute>
+         <layout class="QGridLayout" name="gridLayout_7">
+          <item row="0" column="0">
+           <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="1,2,4">
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_8">
+              <item>
+               <widget class="QPushButton" name="FilterSelectFolderButton">
+                <property name="text">
+                 <string>Select Folder</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QListView" name="FilterFileListView">
+                <property name="selectionMode">
+                 <enum>QAbstractItemView::MultiSelection</enum>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QGridLayout" name="gridLayout_5">
+              <item row="0" column="0">
+               <widget class="QLabel" name="ETLabel">
+                <property name="text">
+                 <string>Earliest Data</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QDateTimeEdit" name="EDateTimeEdit">
+                <property name="calendarPopup">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QLabel" name="LTLabel">
+                <property name="text">
+                 <string>Latest Data</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QDateTimeEdit" name="LDateTimeEdit">
+                <property name="date">
+                 <date>
+                  <year>2099</year>
+                  <month>12</month>
+                  <day>31</day>
+                 </date>
+                </property>
+                <property name="time">
+                 <time>
+                  <hour>0</hour>
+                  <minute>0</minute>
+                  <second>0</second>
+                 </time>
+                </property>
+                <property name="maximumDateTime">
+                 <datetime>
+                  <hour>23</hour>
+                  <minute>59</minute>
+                  <second>59</second>
+                  <year>7999</year>
+                  <month>12</month>
+                  <day>30</day>
+                 </datetime>
+                </property>
+                <property name="calendarPopup">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="0">
+               <widget class="QLabel" name="MinTOLabel">
+                <property name="text">
+                 <string>Min Sec Occluded</string>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="1">
+               <widget class="QDoubleSpinBox" name="MinTDoubleSpinBox">
+                <property name="minimum">
+                 <double>0.100000000000000</double>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="0">
+               <widget class="QLabel" name="MaxTOLabel">
+                <property name="text">
+                 <string>Max Sec Occluded</string>
+                </property>
+               </widget>
+              </item>
+              <item row="4" column="0">
+               <widget class="QLabel" name="MinCMLabel">
+                <property name="text">
+                 <string>Min Centimeter</string>
+                </property>
+               </widget>
+              </item>
+              <item row="4" column="1">
+               <widget class="QSpinBox" name="MinCMSpinBox">
+                <property name="minimum">
+                 <number>10</number>
+                </property>
+                <property name="maximum">
+                 <number>40</number>
+                </property>
+               </widget>
+              </item>
+              <item row="5" column="0">
+               <widget class="QLabel" name="MaxCMLabel">
+                <property name="text">
+                 <string>Max Centimeter</string>
+                </property>
+               </widget>
+              </item>
+              <item row="5" column="1">
+               <widget class="QSpinBox" name="MaxCMSpinBox">
+                <property name="minimum">
+                 <number>10</number>
+                </property>
+                <property name="maximum">
+                 <number>40</number>
+                </property>
+                <property name="value">
+                 <number>40</number>
+                </property>
+               </widget>
+              </item>
+              <item row="6" column="0">
+               <widget class="QLabel" name="MinMDLabel">
+                <property name="text">
+                 <string>Min ms Delta</string>
+                </property>
+               </widget>
+              </item>
+              <item row="6" column="1">
+               <widget class="QSpinBox" name="MinMDSpinBox"/>
+              </item>
+              <item row="7" column="0">
+               <widget class="QLabel" name="MaxMDLabel">
+                <property name="text">
+                 <string>Max ms Delta</string>
+                </property>
+               </widget>
+              </item>
+              <item row="7" column="1">
+               <widget class="QSpinBox" name="MaxMDSpinBox">
+                <property name="value">
+                 <number>99</number>
+                </property>
+               </widget>
+              </item>
+              <item row="8" column="0">
+               <widget class="QLabel" name="MinSLabel">
+                <property name="text">
+                 <string>Min Speed (mph)</string>
+                </property>
+               </widget>
+              </item>
+              <item row="9" column="0">
+               <widget class="QLabel" name="MaxSLabel">
+                <property name="text">
+                 <string>Max Speed (mph)</string>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="1">
+               <widget class="QDoubleSpinBox" name="MaxTDoubleSpinBox">
+                <property name="value">
+                 <double>99.000000000000000</double>
+                </property>
+               </widget>
+              </item>
+              <item row="8" column="1">
+               <widget class="QSpinBox" name="MiinSSpinBox"/>
+              </item>
+              <item row="9" column="1">
+               <widget class="QSpinBox" name="MaxSSpinBox">
+                <property name="value">
+                 <number>99</number>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_9">
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_4">
+                <item>
+                 <widget class="QPushButton" name="ShowDataButton">
+                  <property name="text">
+                   <string>Show Data</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="SavetoFileButton">
+                  <property name="text">
+                   <string>Save to File</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <widget class="QPlainTextEdit" name="DataPlainTextEdit">
+                <property name="horizontalScrollBarPolicy">
+                 <enum>Qt::ScrollBarAsNeeded</enum>
+                </property>
+                <property name="readOnly">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="DataTab">
+         <attribute name="title">
+          <string>Data Visualization</string>
+         </attribute>
+         <layout class="QGridLayout" name="gridLayout_4">
+          <item row="0" column="0">
+           <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="1,3">
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_4">
+              <item>
+               <widget class="QPushButton" name="SelectFolderButton">
+                <property name="text">
+                 <string>Select Folder</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QListView" name="FileListView">
+                <property name="selectionMode">
+                 <enum>QAbstractItemView::MultiSelection</enum>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="WindowPlotWidget" name="DataGraphicsView"/>
+            </item>
+           </layout>
+          </item>
+          <item row="1" column="0">
+           <layout class="QHBoxLayout" name="horizontalLayout_2">
+            <item>
+             <widget class="QComboBox" name="DataComboBox"/>
+            </item>
+            <item>
+             <widget class="QPushButton" name="DataShowButton">
+              <property name="text">
+               <string>Show Data</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="MapTab">
+         <attribute name="title">
+          <string>Map Layout</string>
+         </attribute>
+         <layout class="QGridLayout" name="gridLayout_3">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label">
+            <property name="text">
+             <string>To be integrated!</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionSerial_Connection">
+   <property name="text">
+    <string>Serial Connection</string>
+   </property>
+  </action>
+  <action name="actionBLE_Connection">
+   <property name="text">
+    <string>BLE Connection</string>
+   </property>
+  </action>
+  <action name="actionDownload">
+   <property name="text">
+    <string>Download</string>
+   </property>
+  </action>
+  <action name="actionUpload">
+   <property name="text">
+    <string>Upload</string>
+   </property>
+  </action>
+  <action name="actionSet_Up">
+   <property name="text">
+    <string>Set Up</string>
+   </property>
+  </action>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>WindowPlotWidget</class>
+   <extends>QGraphicsView</extends>
+   <header>pyqtgraph</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
