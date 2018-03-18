@@ -36,17 +36,38 @@
           <item row="0" column="0">
            <layout class="QVBoxLayout" name="verticalLayout_2">
             <item>
-             <widget class="QRadioButton" name="SerialRadioButton">
-              <property name="text">
-               <string>Serial Connection</string>
+             <widget class="QGroupBox" name="SensorGroupBox">
+              <property name="title">
+               <string>Sensor Connection</string>
               </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QRadioButton" name="BLERadioButton">
-              <property name="text">
-               <string>BLE Connection</string>
+              <property name="flat">
+               <bool>true</bool>
               </property>
+              <property name="checkable">
+               <bool>false</bool>
+              </property>
+              <layout class="QVBoxLayout" name="verticalLayout_3">
+               <item>
+                <widget class="QRadioButton" name="SerialRadioButton">
+                 <property name="text">
+                  <string>Serial USB</string>
+                 </property>
+                 <property name="checked">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QRadioButton" name="BLERadioButton">
+                 <property name="text">
+                  <string>Bluetooth</string>
+                 </property>
+                 <property name="checked">
+                  <bool>false</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
              </widget>
             </item>
             <item>
@@ -61,6 +82,9 @@
             </item>
             <item>
              <widget class="QPushButton" name="DeviceConnectButton">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
               <property name="text">
                <string>Connect</string>
               </property>
@@ -135,7 +159,11 @@
                  </widget>
                 </item>
                 <item row="4" column="1">
-                 <widget class="QLineEdit" name="StateLineEdit"/>
+                 <widget class="QLineEdit" name="StateLineEdit">
+                  <property name="readOnly">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
                 </item>
                </layout>
               </item>
@@ -143,6 +171,9 @@
                <layout class="QVBoxLayout" name="verticalLayout_5">
                 <item>
                  <widget class="QPushButton" name="SetButton">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
                   <property name="text">
                    <string>Set Parameters</string>
                   </property>
@@ -150,6 +181,9 @@
                 </item>
                 <item>
                  <widget class="QPushButton" name="StartButton">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
                   <property name="text">
                    <string>Start Running</string>
                   </property>
@@ -157,6 +191,9 @@
                 </item>
                 <item>
                  <widget class="QPushButton" name="StopButton">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
                   <property name="text">
                    <string>Stop Running</string>
                   </property>
@@ -164,6 +201,9 @@
                 </item>
                 <item>
                  <widget class="QPushButton" name="SaveButton">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
                   <property name="text">
                    <string>Save Data</string>
                   </property>
@@ -171,6 +211,9 @@
                 </item>
                 <item>
                  <widget class="QPushButton" name="ResetButton">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
                   <property name="text">
                    <string>Reset Device</string>
                   </property>
@@ -183,7 +226,7 @@
             <item>
              <widget class="QLabel" name="TerminalLabel">
               <property name="text">
-               <string>Raw Terminal</string>
+               <string>Terminal</string>
               </property>
              </widget>
             </item>
@@ -197,10 +240,6 @@
            </layout>
           </item>
          </layout>
-         <zorder>verticalLayoutWidget_2</zorder>
-         <zorder>verticalLayoutWidget_4</zorder>
-         <zorder>verticalLayoutWidget_4</zorder>
-         <zorder>verticalLayoutWidget_5</zorder>
         </widget>
         <widget class="QWidget" name="FilterTab">
          <attribute name="title">
@@ -402,6 +441,9 @@
                <layout class="QHBoxLayout" name="horizontalLayout_4">
                 <item>
                  <widget class="QPushButton" name="ShowDataButton">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
                   <property name="text">
                    <string>Show Data</string>
                   </property>
@@ -409,6 +451,9 @@
                 </item>
                 <item>
                  <widget class="QPushButton" name="SavetoFileButton">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
                   <property name="text">
                    <string>Save to File</string>
                   </property>
@@ -458,7 +503,7 @@
              </layout>
             </item>
             <item>
-             <widget class="WindowPlotWidget" name="DataGraphicsView"/>
+             <widget class="PlotWidget" name="DataGraphicsView"/>
             </item>
            </layout>
           </item>
@@ -469,8 +514,21 @@
             </item>
             <item>
              <widget class="QPushButton" name="DataShowButton">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
               <property name="text">
                <string>Show Data</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="SaveImageButton">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+              <property name="text">
+               <string>Save Image</string>
               </property>
              </widget>
             </item>
@@ -530,7 +588,7 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>WindowPlotWidget</class>
+   <class>PlotWidget</class>
    <extends>QGraphicsView</extends>
    <header>pyqtgraph</header>
   </customwidget>
