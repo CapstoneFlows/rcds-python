@@ -49,7 +49,7 @@ class RCDSTool(QtGui.QMainWindow):
     # TODO: Find way to make live terminal
 
     def WriteTerminal(self, msg):
-        self.ui.TerminalPlainTextEdit.appendPlainText(msg + "\n")
+        self.ui.TerminalPlainTextEdit.appendPlainText(msg)
 
     def ClearDeviceList(self):
         self.ui.DeviceListComboBox.clear()
@@ -64,10 +64,10 @@ class RCDSTool(QtGui.QMainWindow):
         if devices:
             self.ui.DeviceListComboBox.addItems(devices)
             self.ui.DeviceConnectButton.setDisabled(False)
-            self.WriteTerminal(info)
+            self.WriteTerminal(str(info))
         else:
             self.ui.DeviceConnectButton.setDisabled(True)
-            self.WriteTerminal(info)
+            self.WriteTerminal(str(info))
 
     def ButtonsSetDisabled(self, state):
         self.ui.SetButton.setDisabled(state)
@@ -101,7 +101,33 @@ class RCDSTool(QtGui.QMainWindow):
         if info:
             self.GetSetParams(info)
             self.WriteTerminal("Connected to " + device)
-            self.WriteTerminal(info)
+            self.WriteTerminal(str(info))
+
+            if "ERROR" in info["STATE"]:
+                self.WriteTerminal("Device is in error state: " + info["STATE"])
+                self.WriteTerminal("Address error before continuing.")
+                self.conn.close()
+                self.conn = None
+                self.ButtonsSetDisabled(True)
+            elif "NEED_VARS" in info["STATE"]:
+                self.WriteTerminal("Device needs parameters.")
+                self.WriteTerminal("Set new parameters before continuing.")
+                self.conn = conn
+                self.ButtonsSetDisabled(True)
+                self.ui.SetButton.setDisabled(False)
+            else:
+                self.conn = conn
+                self.ButtonsSetDisabled(False)
+        else:
+            self.WriteTerminal("Unable to connect to " + device)
+            self.conn = None
+            self.ButtonsSetDisabled(True)
+
+    def HandleInfo(self, info, okmsg, errmsg):
+        if info:
+            self.GetSetParams(info)
+            self.WriteTerminal(okmsg)
+            self.WriteTerminal(str(info))
 
             if "ERROR" in info["STATE"]:
                 self.WriteTerminal("Device is in error state: " + info["STATE"])
@@ -115,31 +141,7 @@ class RCDSTool(QtGui.QMainWindow):
                 self.ButtonsSetDisabled(True)
                 self.ui.SetButton.setDisabled(False)
             else:
-                self.conn = conn
                 self.ButtonsSetDisabled(False)
-        else:
-            self.WriteTerminal("Unable to connect to " + device)
-            self.conn.close()
-            self.conn = None
-            self.ButtonsSetDisabled(True)
-
-    def HandleInfo(self, info, okmsg, errmsg):
-        if info:
-            self.GetSetParams(info)
-            self.WriteTerminal(okmsg)
-            self.WriteTerminal(info)
-
-            if "ERROR" in info["STATE"]:
-                self.WriteTerminal("Device is in error state: " + info["STATE"])
-                self.WriteTerminal("Address error before continuing.")
-                self.conn.close()
-                self.conn = None
-                self.ButtonsSetDisabled(True)
-            elif "NEED_VARS" in info["STATE"]:
-                self.WriteTerminal("Device needs parameters.")
-                self.WriteTerminal("Set new parameters before continuing.")
-                self.ButtonsSetDisabled(True)
-                self.ui.SetButton.setDisabled(False)
         else:
             self.WriteTerminal(errmsg)
             self.conn.close()
@@ -147,7 +149,7 @@ class RCDSTool(QtGui.QMainWindow):
             self.ButtonsSetDisabled(True)
 
     def SetParameters(self):
-        params = GetSetParams()
+        params = self.GetSetParams()
 
         info = sc.SetParams(self.conn, params)
         self.HandleInfo(info, "Updated parameters.", "Error setting new parameters.")
@@ -164,7 +166,7 @@ class RCDSTool(QtGui.QMainWindow):
         self.raw_path = str(QtGui.QFileDialog.getExistingDirectory(self, "Select Save Directory", self.raw_path))
         if self.raw_path:
             self.WriteTerminal("Getting data from device, please wait.")
-            info = sc.SaveData(self.conn, self.raw_path)
+            info = sc.SaveData(self.conn, self.raw_path, str(self.ui.IDLineEdit.text()))
             self.HandleInfo(info, "Saved data from device.", "Error saving data.")
         else:
             self.WriteTerminal("No path selected, cannot save.")

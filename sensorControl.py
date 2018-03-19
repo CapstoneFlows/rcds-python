@@ -19,7 +19,6 @@ import bluepy
 
 class Connection():
     def __init__(self, conntype):
-        super(Connection, self).__init__(conntype)
         self.type = conntype
         self.id = None
         self.conn = None
@@ -28,12 +27,14 @@ class Connection():
         self.id = did
         if self.type == "SERIAL":
             try:
-                self.conn = serial.Serial(did, timeout=5)
+                self.conn = serial.Serial(did, timeout=2)
                 resp = self.sendCmd("T"+str(int(time.time())))
                 if "TIME_ACK" not in resp:
-                    if "INVALID_COMMAND" not in resp:
-                        return False
-                    return False
+                    for tries in range(2):
+                        resp = self.sendCmd("?")
+                        if "ID=" not in resp:
+                            return False
+                        return True
                 return True
             except:
                 return False
@@ -49,8 +50,10 @@ class Connection():
                 self.conn.delegate.handleNotification = getResponse
                 resp = self.sendCmd("T"+str(int(time.time())))
                 if "TIME_ACK" not in resp:
-                    if "INVALID_COMMAND" not in resp:
+                    resp = self.sendCmd("?")
+                    if "ID=" not in resp:
                         return False
+                    return True
                 return True
             except:
                 return False
@@ -67,11 +70,9 @@ class Connection():
                     line = self.conn.readline()
                 return longReturn
             elif "RESET_DEVICE" in cmd:
-                self.conn.setTimeout(60)
-                while "NEED_VARS" not in line:
+                while "RESET_COMPLETE" not in line:
                     longReturn += line + '\n'
                     line = self.conn.readline()
-                self.conn.setTimeout(5)
                 return longReturn
             else:
                 return line
@@ -87,7 +88,7 @@ class Connection():
                     longReturn += self.bleMsg + '\n'
                 return longReturn
             elif "RESET_DEVICE" in cmd:
-                while "NEED_VARS" not in self.bleMsg:
+                while "RESET_COMPLETE" not in self.bleMsg:
                     ok = self.conn.waitForNotifications(5.0)
                     if not ok:
                         return None
@@ -148,10 +149,10 @@ def ScanBLEConnections():
 def ParseResp(resp):
     params = {}
     params["STATE"] = resp.split(" ")[0]
-    self.id = params["ID"] = resp.split(" ID=")[1].split(" LOC=")[0]
+    params["ID"] = resp.split(" ID=")[1].split(" LOC=")[0]
     params["LOC"] = resp.split(" LOC=")[1].split(" DIR=")[0]
     params["DIR"] = resp.split(" DIR=")[1].split("COMMENT=")[0]
-    params["COMMENT"] = resp.split("COMMENT=")[1]
+    params["COMMENT"] = resp.split("COMMENT=")[1].split('\r')[0]
     return params
 
 
@@ -176,7 +177,8 @@ def ConnectBLE(device):
 
 
 def SetParams(conn, params):
-    resp = conn.sendCmd("SET_VARS")
+    conn.sendCmd("SET_VARS")
+    time.sleep(1)
     conn.sendCmd("ID="+params["ID"])
     conn.sendCmd("LOC="+params["LOC"])
     conn.sendCmd("DIR="+params["DIR"])
@@ -232,13 +234,13 @@ def ParseData(resp, did):
     return parsedData
 
 
-def SaveData(conn, path):
+def SaveData(conn, path, did):
     resp = conn.sendCmd("RETURN_DATA")
     if "ACK" not in resp:
         return None
     else:
-        parsedData = ParseData(resp, conn.id)
-        dirPath = os.path.join(path, conn.id);
+        parsedData = ParseData(resp, did)
+        dirPath = os.path.join(path, did);
         if not os.path.exists(dirPath):
             os.makedirs(dirPath)
         for fileName in parsedData:
