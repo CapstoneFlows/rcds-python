@@ -231,7 +231,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QTextEdit" name="TerminalTextEdit">
+             <widget class="QPlainTextEdit" name="TerminalPlainTextEdit">
               <property name="readOnly">
                <bool>true</bool>
               </property>
@@ -424,7 +424,7 @@
                </widget>
               </item>
               <item row="8" column="1">
-               <widget class="QSpinBox" name="MiinSSpinBox"/>
+               <widget class="QSpinBox" name="MinSSpinBox"/>
               </item>
               <item row="9" column="1">
                <widget class="QSpinBox" name="MaxSSpinBox">

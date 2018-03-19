@@ -5,17 +5,17 @@ import time
 import serial
 import bluepy
 
-cmdAcks = {
-    "ID=":"ID_ACK",
-    "LOC=":"LOC_ACK",
-    "DIR=":"DIR_ACK",
-    "COMMENT=":"COMMENT_ACK",
-    "START_RUNNING":"START_ACK",
-    "STOP_RUNNING":"STOP_ACK",
-    "RETURN_DATA":"RETURN_ACK",
-    "SET_VARS":"SET_ACK",
-    "RESET_DEVICE":"RESET_ACK"
-}
+#cmdAcks = {
+#    "ID=":"ID_ACK",
+#    "LOC=":"LOC_ACK",
+#    "DIR=":"DIR_ACK",
+#    "COMMENT=":"COMMENT_ACK",
+#    "START_RUNNING":"START_ACK",
+#    "STOP_RUNNING":"STOP_ACK",
+#    "RETURN_DATA":"RETURN_ACK",
+#    "SET_VARS":"SET_ACK",
+#    "RESET_DEVICE":"RESET_ACK"
+#}
 
 class Connection():
     def __init__(self, conntype):
@@ -29,11 +29,11 @@ class Connection():
         if self.type == "SERIAL":
             try:
                 self.conn = serial.Serial(did, timeout=5)
-                resp = self.sendCmd("?")
-                if chr(65) in resp:
-                    resp = self.sendCmd("T"+str(int(time.time())))
-                    if "TIME_ACK" not in resp:
+                resp = self.sendCmd("T"+str(int(time.time())))
+                if "TIME_ACK" not in resp:
+                    if "INVALID_COMMAND" not in resp:
                         return False
+                    return False
                 return True
             except:
                 return False
@@ -47,17 +47,17 @@ class Connection():
                     if self.handle == cHandle:
                         self.bleMsg = str(struct.unpack("s", data[1]))
                 self.conn.delegate.handleNotification = getResponse
-                resp = self.sendCmd("?")
-                if chr(65) in resp:
-                    resp = self.sendCmd("T"+str(int(time.time())))
-                    if "TIME_ACK" not in resp:
+                resp = self.sendCmd("T"+str(int(time.time())))
+                if "TIME_ACK" not in resp:
+                    if "INVALID_COMMAND" not in resp:
                         return False
+                return True
             except:
                 return False
 
     def sendCmd(self, cmd):
         longReturn = "" 
-        
+
         if self.type == "SERIAL":
             self.conn.write(cmd)
             line = self.conn.readline()
@@ -125,18 +125,24 @@ def ScanSerialConnections(platform):
             activePorts.append(port)
         except:
             pass
-    return activePorts
+    return activePorts, "Scanned serial devices; "+str(len(activePorts))+" available."
 
 
 def ScanBLEConnections():
     scanner = bluepy.btle.Scanner()
-    devices = scanner.scan(1.0)
+    try:
+        devices = scanner.scan(1.0)
 
-    activeDevices = []
-    for dev in devices:
-        if dev.connectable:
-            activeDevices.append(dev.addr)
-    return activeDevices
+        activeDevices = []
+        for dev in devices:
+            if dev.connectable:
+                activeDevices.append(dev.addr)
+        return activeDevices, "Scanned BLE devices; "+str(len(activeDevices))+" available."
+    except bluepy.btle.BTLEException, e:
+        if "le on" in str(e):
+            return [], "No BLE capability on this machine."
+        else:
+            return [], "Unable to scan: "+str(e)
 
 
 def ParseResp(resp):
@@ -184,7 +190,10 @@ def SetParams(conn, params):
 
 
 def Start(conn):
-    conn.sendCmd("START_RUNNING")
+    resp = conn.sendCmd("START_RUNNING")
+    if "ACK" not in resp:
+        return None
+
     resp = conn.sendCmd("?")
 
     if resp:
@@ -194,7 +203,10 @@ def Start(conn):
 
 
 def Stop(conn):
-    conn.sendCmd("STOP_RUNNING")
+    resp = conn.sendCmd("STOP_RUNNING")
+    if "ACK" not in resp:
+        return None
+
     resp = conn.sendCmd("?")
 
     if resp:
@@ -220,18 +232,18 @@ def ParseData(resp, did):
     return parsedData
 
 
-def SaveData(conn, path, winunix):
+def SaveData(conn, path):
     resp = conn.sendCmd("RETURN_DATA")
-    if resp:
+    if "ACK" not in resp:
+        return None
+    else:
         parsedData = ParseData(resp, conn.id)
-        dirPath = path+winunix+conn.id;
+        dirPath = os.path.join(path, conn.id);
         if not os.path.exists(dirPath):
             os.makedirs(dirPath)
         for fileName in parsedData:
-            with open(dirPath+winunix+fileName, 'w') as f:
+            with open(os.path.join(dirPath, fileName), 'w') as f:
                 f.writelines(parsedData[fileName])
-    else:
-        return None
 
     resp = conn.sendCmd("?")
 
@@ -242,7 +254,9 @@ def SaveData(conn, path, winunix):
 
 
 def Reset(conn):
-    conn.sendCmd("RESET_DEVICE")
+    resp = conn.sendCmd("RESET_DEVICE")
+    if "ACK" not in resp:
+        return None
     resp = conn.sendCmd("?")
 
     if resp:

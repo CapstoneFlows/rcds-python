@@ -1,0 +1,4 @@
+These are needed to develop on Fedora
+
+PyQt4[-devel]
+bluez[-libs]

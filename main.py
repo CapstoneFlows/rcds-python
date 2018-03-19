@@ -13,12 +13,6 @@ class RCDSTool(QtGui.QMainWindow):
         # Check what OS we are on
         self.platform = sys.platform
 
-        if self.platform == "linux" or self.platform == "linux2" \
-            or self.platform == "darwin": #Unix
-            self.winunix = '/'
-        elif self.platform == "win32": #Windows
-            self.winunix = '\\'
-
         # Set up UI
         self.ui = Ui_MainWindow()
         self.setWindowFlags(self.windowFlags() |
@@ -28,6 +22,7 @@ class RCDSTool(QtGui.QMainWindow):
 
         # Set up function bindings and tab-based variables
         self.conn = None
+        self.raw_path = os.getcwd()
         self.ui.SerialRadioButton.toggled.connect(self.ClearDeviceList)
         self.ui.BLERadioButton.toggled.connect(self.ClearDeviceList)
         self.ui.ScanDevicesButton.clicked.connect(self.ScanDevices)
@@ -38,6 +33,7 @@ class RCDSTool(QtGui.QMainWindow):
         self.ui.SaveButton.clicked.connect(self.SaveRawData)
         self.ui.ResetButton.clicked.connect(self.ResetDevice)
 
+        self.filter_path = os.getcwd()
         self.ui.FilterSelectFolderButton.clicked.connect(self.SelectFilterFolder)
         self.ui.ShowDataButton.clicked.connect(self.ShowFilteredData)
         self.ui.SavetoFileButton.clicked.connect(self.SaveFilteredData)
@@ -53,7 +49,7 @@ class RCDSTool(QtGui.QMainWindow):
     # TODO: Find way to make live terminal
 
     def WriteTerminal(self, msg):
-        self.ui.TerminalTextEdit.insertPlainText(msg)
+        self.ui.TerminalPlainTextEdit.appendPlainText(msg + "\n")
 
     def ClearDeviceList(self):
         self.ui.DeviceListComboBox.clear()
@@ -61,15 +57,17 @@ class RCDSTool(QtGui.QMainWindow):
 
     def ScanDevices(self):
         if self.ui.SerialRadioButton.isChecked():
-            devices = sc.ScanSerialConnections(self.platform)
+            devices, info = sc.ScanSerialConnections(self.platform)
         elif self.ui.BLERadioButton.isChecked():
-            devices = sc.ScanBLEConnections()
+            devices, info = sc.ScanBLEConnections()
 
         if devices:
             self.ui.DeviceListComboBox.addItems(devices)
             self.ui.DeviceConnectButton.setDisabled(False)
+            self.WriteTerminal(info)
         else:
             self.ui.DeviceConnectButton.setDisabled(True)
+            self.WriteTerminal(info)
 
     def ButtonsSetDisabled(self, state):
         self.ui.SetButton.setDisabled(state)
@@ -102,25 +100,25 @@ class RCDSTool(QtGui.QMainWindow):
 
         if info:
             self.GetSetParams(info)
-            self.WriteTerminal("\nConnected to " + device)
-            self.WriteTerminal("\n" + info)
+            self.WriteTerminal("Connected to " + device)
+            self.WriteTerminal(info)
 
             if "ERROR" in info["STATE"]:
-                self.WriteTerminal("\nDevice is in error state: " + info["STATE"])
-                self.WriteTerminal("\nAddress error before continuing.")
+                self.WriteTerminal("Device is in error state: " + info["STATE"])
+                self.WriteTerminal("Address error before continuing.")
                 self.conn.close()
                 self.conn = None
                 self.ButtonsSetDisabled(True)
             elif "NEED_VARS" in info["STATE"]:
-                self.WriteTerminal("\nDevice needs parameters.")
-                self.WriteTerminal("\nSet new parameters before continuing.")
+                self.WriteTerminal("Device needs parameters.")
+                self.WriteTerminal("Set new parameters before continuing.")
                 self.ButtonsSetDisabled(True)
                 self.ui.SetButton.setDisabled(False)
             else:
                 self.conn = conn
                 self.ButtonsSetDisabled(False)
         else:
-            self.WriteTerminal("\nUnable to connect to " + device)
+            self.WriteTerminal("Unable to connect to " + device)
             self.conn.close()
             self.conn = None
             self.ButtonsSetDisabled(True)
@@ -128,22 +126,22 @@ class RCDSTool(QtGui.QMainWindow):
     def HandleInfo(self, info, okmsg, errmsg):
         if info:
             self.GetSetParams(info)
-            self.WriteTerminal("\n" + okmsg)
-            self.WriteTerminal("\n" + info)
+            self.WriteTerminal(okmsg)
+            self.WriteTerminal(info)
 
             if "ERROR" in info["STATE"]:
-                self.WriteTerminal("\nDevice is in error state: " + info["STATE"])
-                self.WriteTerminal("\nAddress error before continuing.")
+                self.WriteTerminal("Device is in error state: " + info["STATE"])
+                self.WriteTerminal("Address error before continuing.")
                 self.conn.close()
                 self.conn = None
                 self.ButtonsSetDisabled(True)
             elif "NEED_VARS" in info["STATE"]:
-                self.WriteTerminal("\nDevice needs parameters.")
-                self.WriteTerminal("\nSet new parameters before continuing.")
+                self.WriteTerminal("Device needs parameters.")
+                self.WriteTerminal("Set new parameters before continuing.")
                 self.ButtonsSetDisabled(True)
                 self.ui.SetButton.setDisabled(False)
         else:
-            self.WriteTerminal("\n" + errmsg)
+            self.WriteTerminal(errmsg)
             self.conn.close()
             self.conn = None
             self.ButtonsSetDisabled(True)
@@ -163,17 +161,16 @@ class RCDSTool(QtGui.QMainWindow):
         self.HandleInfo(info, "Stopped device.", "Error stopping device.")
 
     def SaveRawData(self):
-        path = str(QtGui.QFileDialog.getExistingDirectory(self, "Select Directory", os.getcwd()))
-        if path:
-            os.chdir(path)
-            self.WriteTerminal("\nGetting data from device, please wait.")
-            info = sc.SaveData(self.conn, path, self.winunix)
+        self.raw_path = str(QtGui.QFileDialog.getExistingDirectory(self, "Select Save Directory", self.raw_path))
+        if self.raw_path:
+            self.WriteTerminal("Getting data from device, please wait.")
+            info = sc.SaveData(self.conn, self.raw_path)
             self.HandleInfo(info, "Saved data from device.", "Error saving data.")
         else:
-            self.WriteTerminal("\nNo path selected, cannot save.")
+            self.WriteTerminal("No path selected, cannot save.")
 
     def ResetDevice(self):
-        self.WriteTerminal("\nResetting device, please wait.")
+        self.WriteTerminal("Resetting device, please wait.")
         info = sc.Reset(self.conn)
         self.HandleInfo(info, "Reset device successfully.", "Error resetting device.")
 
@@ -181,13 +178,42 @@ class RCDSTool(QtGui.QMainWindow):
     # Data Filtering Functions
 
     def SelectFilterFolder(self):
-        pass
+        self.filter_path = str(QtGui.QFileDialog.getExistingDirectory(self, "Select Filter Directory", self.filter_path))
+        if self.filter_path:
+            files = [f for f in os.listdir(self.filter_path) if (os.path.isfile(os.path.join(self.filter_path, f)) and '.csv' in f)]
+            if files:
+                self.ui.FilterFileListView.addItems(devices)
+                self.ui.ShowDataButton.setDisabled(False)
+                self.ui.SavetoFileButton.setDisabled(False)
+            else:
+                self.ui.ShowDataButton.setDisabled(True)
+                self.ui.SavetoFileButton.setDisabled(True)
+        else:
+            self.ui.ShowDataButton.setDisabled(True)
+            self.ui.SavetoFileButton.setDisabled(True)
+
+    def GetFilters(self):
+        filters = {}
+        filters["EDateTime"] = str(self.ui.EDateTimeEdit.textFromDateTime())
+        filters["LDateTime"] = str(self.ui.LDateTimeEdit.textFromDateTime())
+        filters["MinTO"] = self.ui.MinTDoubleSpinBox.value()
+        filters["MinTO"] = self.ui.MaxTDoubleSpinBox.value()
+        filters["MinCM"] = self.ui.MinCMSpinBox.value()
+        filters["MaxCM"] = self.ui.MaxCMSpinBox.value()
+        filters["MinMD"] = self.ui.MinMDSpinBox.value()
+        filters["MaxMD"] = self.ui.MaxMDSpinBox.value()
+        filters["MinS"] = self.ui.MinSSpinBox.value()
+        filters["MAxS"] = self.ui.MaxSSpinBox.value()
+        return filters
 
     def ShowFilteredData(self):
-        pass
+        selectedFiles = [str(x.text()) for x in self.ui.FilterFileListView.selectedItems()]
+        filterData = df.ProcessData(self.filter_path, selectedFiles, self.GetFilters())
+        self.ui.DataPlainTextEdit.setPlainText(filterData)
 
     def SaveFilteredData(self):
-        pass
+        name = str(QtGui.QFileDialog.getSaveFileName(self, "Save Filtered Data File", self.filter_path))
+        df.SaveData(name, str(self.ui.DataPlainTextEdit.toPlainText()))
 
 ###############################################################################
     # Data Visualization Functions
