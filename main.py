@@ -196,8 +196,8 @@ class RCDSTool(QtGui.QMainWindow):
 
     def GetFilters(self):
         filters = {}
-        filters["EDateTime"] = str(int(self.ui.EDateTimeEdit.dateTime().toTime_t()))
-        filters["LDateTime"] = str(int(self.ui.LDateTimeEdit.dateTime().toTime_t()))
+        filters["EDateTime"] = int(self.ui.EDateTimeEdit.dateTime().toTime_t())
+        filters["LDateTime"] = int(self.ui.LDateTimeEdit.dateTime().toTime_t())
         filters["MinTO"] = self.ui.MinTDoubleSpinBox.value()
         filters["MinTO"] = self.ui.MaxTDoubleSpinBox.value()
         filters["MinCM"] = self.ui.MinCMSpinBox.value()
