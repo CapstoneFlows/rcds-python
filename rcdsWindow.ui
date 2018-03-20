@@ -258,7 +258,7 @@
                </widget>
               </item>
               <item>
-               <widget class="QListView" name="FilterFileListView">
+               <widget class="QListWidget" name="FilterFileListWidget">
                 <property name="selectionMode">
                  <enum>QAbstractItemView::MultiSelection</enum>
                 </property>

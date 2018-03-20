@@ -184,7 +184,7 @@ class RCDSTool(QtGui.QMainWindow):
         if self.filter_path:
             files = [f for f in os.listdir(self.filter_path) if (os.path.isfile(os.path.join(self.filter_path, f)) and '.csv' in f)]
             if files:
-                self.ui.FilterFileListView.addItems(devices)
+                self.ui.FilterFileListWidget.addItems(files)
                 self.ui.ShowDataButton.setDisabled(False)
                 self.ui.SavetoFileButton.setDisabled(False)
             else:
@@ -196,8 +196,8 @@ class RCDSTool(QtGui.QMainWindow):
 
     def GetFilters(self):
         filters = {}
-        filters["EDateTime"] = str(self.ui.EDateTimeEdit.textFromDateTime())
-        filters["LDateTime"] = str(self.ui.LDateTimeEdit.textFromDateTime())
+        filters["EDateTime"] = str(int(self.ui.EDateTimeEdit.dateTime().toTime_t()))
+        filters["LDateTime"] = str(int(self.ui.LDateTimeEdit.dateTime().toTime_t()))
         filters["MinTO"] = self.ui.MinTDoubleSpinBox.value()
         filters["MinTO"] = self.ui.MaxTDoubleSpinBox.value()
         filters["MinCM"] = self.ui.MinCMSpinBox.value()
@@ -209,7 +209,7 @@ class RCDSTool(QtGui.QMainWindow):
         return filters
 
     def ShowFilteredData(self):
-        selectedFiles = [str(x.text()) for x in self.ui.FilterFileListView.selectedItems()]
+        selectedFiles = [str(x.text()) for x in self.ui.FilterFileListWidget.selectedItems()]
         filterData = df.ProcessData(self.filter_path, selectedFiles, self.GetFilters())
         self.ui.DataPlainTextEdit.setPlainText(filterData)
 
