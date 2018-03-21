@@ -1,0 +1,32 @@
+name: rcds-python
+channels:
+- anaconda-fusion
+- defaults
+dependencies:
+- certifi=2016.2.28=py27_0
+- icu=57.1=vc9_0
+- jpeg=8d=vc9_2
+- libpng=1.6.30=vc9_1
+- libtiff=4.0.6=vc9_2
+- numpy=1.13.1=py27_0
+- openssl=1.0.2l=vc9_0
+- pip=9.0.1=py27_1
+- pyqt=4.11.4=py27_7
+- pyqtgraph=0.10.0=py27_0
+- pyserial=2.7=py27_0
+- python=2.7.13=1
+- qt=4.8.7=vc9_9
+- setuptools=36.4.0=py27_1
+- sip=4.18=py27_0
+- vc=9=0
+- vs2008_runtime=9.00.30729.5054=0
+- vs2015_runtime=14.0.25420=0
+- wheel=0.29.0=py27_0
+- wincertstore=0.2=py27_0
+- zlib=1.2.11=vc9_0
+- pip:
+  - bgapi==0.6
+  - enum-compat==0.0.2
+  - enum34==1.1.6
+  - pygatt==3.2.0
+
