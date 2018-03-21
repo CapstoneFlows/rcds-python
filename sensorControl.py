@@ -3,7 +3,7 @@ import os
 import glob
 import time
 import serial
-import bluepy
+import pygatt
 
 #cmdAcks = {
 #    "ID=":"ID_ACK",
@@ -38,6 +38,7 @@ class Connection():
                 return True
             except:
                 return False
+            '''
         elif self.type == "BLE":
             try:
                 self.conn = bluepy.btle.Peripheral(did)
@@ -57,6 +58,9 @@ class Connection():
                 return True
             except:
                 return False
+            '''
+        else:
+            return False
 
     def sendCmd(self, cmd):
         longReturn = "" 
@@ -76,7 +80,7 @@ class Connection():
                 return longReturn
             else:
                 return line
-
+            '''
         elif self.type == "BLE":
             self.bleMsg = ""
             self.char.write(cmd)
@@ -100,12 +104,17 @@ class Connection():
                     return self.bleMsg
                 else:
                     return None
+            '''
+        else:
+            return None
 
     def close(self):
         if self.type == "SERIAL":
             self.conn.close()
+            '''
         elif self.type == "BLE":
             self.conn.disconnect()
+            '''
 
 
 def ScanSerialConnections(platform):
@@ -130,6 +139,8 @@ def ScanSerialConnections(platform):
 
 
 def ScanBLEConnections():
+    return [], "BLE not supported yet."
+    '''
     scanner = bluepy.btle.Scanner()
     try:
         devices = scanner.scan(1.0)
@@ -144,7 +155,7 @@ def ScanBLEConnections():
             return [], "No BLE capability on this machine."
         else:
             return [], "Unable to scan: "+str(e)
-
+    '''
 
 def ParseResp(resp):
     params = {}
@@ -167,6 +178,7 @@ def ConnectSerial(device):
 
 
 def ConnectBLE(device):
+    '''
     conn = Connection("BLE")
     ok = conn.connect(device)
     if ok:
@@ -174,6 +186,8 @@ def ConnectBLE(device):
         return conn, ParseResp(resp)
     else:
         return None, None
+    '''
+    return None, None
 
 
 def SetParams(conn, params):
