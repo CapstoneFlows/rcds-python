@@ -17,7 +17,7 @@ class Connection():
         self.id = did
         if self.type == "SERIAL":
             try:
-                self.conn = serial.Serial(did, timeout=1)
+                self.conn = serial.Serial(did, timeout=1, writeTimeout=1)
                 resp = self.sendCmd("T"+str(int(time.time())))
                 if "TIME_ACK" not in resp:
                     resp = self.sendCmd("?")

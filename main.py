@@ -38,6 +38,7 @@ class RCDSTool(QtGui.QMainWindow):
         self.ui.ShowDataButton.clicked.connect(self.ShowFilteredData)
         self.ui.SavetoFileButton.clicked.connect(self.SaveFilteredData)
 
+        self.data_path = os.getcwd()
         self.ui.SelectFolderButton.clicked.connect(self.SelectVisualizationFolder)
         self.ui.DataShowButton.clicked.connect(self.GraphData)
         self.ui.SaveImageButton.clicked.connect(self.SaveGraph)
@@ -55,8 +56,16 @@ class RCDSTool(QtGui.QMainWindow):
         self.ui.DeviceListComboBox.clear()
         self.ui.DeviceConnectButton.setDisabled(True)
 
+    def ClearParams(self):
+            self.ui.IDLineEdit.clear()
+            self.ui.LocLineEdit.clear()
+            self.ui.DirLineEdit.clear()
+            self.ui.CommentLineEdit.clear()
+            self.ui.StateLineEdit.clear()
+
     def ScanDevices(self):
         self.ui.DeviceListComboBox.clear()
+        self.ClearParams()
         if self.ui.SerialRadioButton.isChecked():
             devices, info = sc.ScanSerialConnections(self.platform)
         elif self.ui.BLERadioButton.isChecked():
@@ -222,13 +231,30 @@ class RCDSTool(QtGui.QMainWindow):
     # Data Visualization Functions
 
     def SelectVisualizationFolder(self):
-        pass
+        self.data_path = str(QtGui.QFileDialog.getExistingDirectory(self, "Select Data Directory", self.data_path))
+        if self.data_path:
+            files = [f for f in os.listdir(self.data_path) if (os.path.isfile(os.path.join(self.data_path, f)) and '.csv' in f)]
+            if files:
+                self.ui.DataFileListWidget.addItems(files)
+                self.ui.DataShowButton.setDisabled(False)
+                self.ui.SaveImageButton.setDisabled(False)
+            else:
+                self.ui.DataShowButton.setDisabled(True)
+                self.ui.SaveImageButton.setDisabled(True)
+        else:
+            self.ui.DataShowButton.setDisabled(True)
+            self.ui.SaveImageButton.setDisabled(True)
 
     def GraphData(self):
-        pass
+        self.ui.DataGraphicsView.getPlotItem().clear()
+        graph_func = str(self.ui.DataComboBox.currentText())
+        selectedFiles = [str(x.text()) for x in self.ui.DataFileListWidget.selectedItems()]
+        x, y, xaxis, xunits, yaxis, yunits, title = dv.graph_handles[graph_func](selectedFiles)
+        self.ui.DataGraphicsView.plot(x,y, title=title, labels={"title":title, "left":(yaxis, yunits), "right":(xaxis, xunits)})
 
     def SaveGraph(self):
-        pass
+        name = str(QtGui.QFileDialog.getSaveFileName(self, "Save Graph as Image", self.data_path, selectedFilter='*.txt'))
+        dv.SaveGraph(name, self.ui.DataGraphicsView)
 
 ###############################################################################
 
