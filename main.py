@@ -249,8 +249,7 @@ class RCDSTool(QtGui.QMainWindow):
         self.ui.DataGraphicsView.getPlotItem().clear()
         graph_func = str(self.ui.DataComboBox.currentText())
         selectedFiles = [str(x.text()) for x in self.ui.DataFileListWidget.selectedItems()]
-        x, y, xaxis, xunits, yaxis, yunits, title = dv.graph_handles[graph_func](selectedFiles)
-        self.ui.DataGraphicsView.plot(x,y, title=title, labels={"title":title, "left":(yaxis, yunits), "right":(xaxis, xunits)})
+        x, y, xaxis, xunits, yaxis, yunits, title = dv.graph_handles[graph_func](selectedFiles, self.ui.DataGraphicsView)
 
     def SaveGraph(self):
         name = str(QtGui.QFileDialog.getSaveFileName(self, "Save Graph as Image", self.data_path, selectedFilter='*.txt'))

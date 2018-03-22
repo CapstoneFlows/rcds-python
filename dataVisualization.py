@@ -6,13 +6,14 @@ def saveGraph(fileName, pyqtwidget):
     pass
 
 
-def plotGraph(files):
+def plotGraph(files, plotwidget):
     def graph_decorator(func):
-        x, y, xaxis, xunits, yaxis, yunits, title = func(files)
+        x, y, xaxis, xunits, yaxis, yunits, title = func(files, plotwidget)
+        plotwidget.plot(x,y, title=title, labels={"left":(yaxis, yunits), "right":(xaxis, xunits)})
     return(graph_decorator)
 
-@plotGraph([])
-def carsPerHour(files):
+@plotGraph([], pg)
+def carsPerHour(files, plotwidget):
     return [0], [0], "", "", "", "", ""
 
 
