@@ -5,17 +5,7 @@ import time
 import serial
 import pygatt
 
-#cmdAcks = {
-#    "ID=":"ID_ACK",
-#    "LOC=":"LOC_ACK",
-#    "DIR=":"DIR_ACK",
-#    "COMMENT=":"COMMENT_ACK",
-#    "START_RUNNING":"START_ACK",
-#    "STOP_RUNNING":"STOP_ACK",
-#    "RETURN_DATA":"RETURN_ACK",
-#    "SET_VARS":"SET_ACK",
-#    "RESET_DEVICE":"RESET_ACK"
-#}
+UUID = "0000ffe1-0000-1000-8000-00805f9b34fb"
 
 class Connection():
     def __init__(self, conntype):
@@ -27,28 +17,7 @@ class Connection():
         self.id = did
         if self.type == "SERIAL":
             try:
-                self.conn = serial.Serial(did, timeout=2)
-                resp = self.sendCmd("T"+str(int(time.time())))
-                if "TIME_ACK" not in resp:
-                    for tries in range(2):
-                        resp = self.sendCmd("?")
-                        if "ID=" not in resp:
-                            return False
-                        return True
-                return True
-            except:
-                return False
-            '''
-        elif self.type == "BLE":
-            try:
-                self.conn = bluepy.btle.Peripheral(did)
-                self.char = self.conn.getCharacteristics(uuid="0000ffe1-0000-1000-8000-00805f9b34fb")
-                self.handle = self.char.getHandle()
-                self.bleMsg = ""
-                def getResponse(self, cHandle, data):
-                    if self.handle == cHandle:
-                        self.bleMsg = str(struct.unpack("s", data[1]))
-                self.conn.delegate.handleNotification = getResponse
+                self.conn = serial.Serial(did, timeout=1)
                 resp = self.sendCmd("T"+str(int(time.time())))
                 if "TIME_ACK" not in resp:
                     resp = self.sendCmd("?")
@@ -58,7 +27,50 @@ class Connection():
                 return True
             except:
                 return False
-            '''
+
+        elif self.type == "BLE_WINDOWS":
+            self.adapter = pygatt.BGAPIBackend()
+
+            try:
+                self.adapter.start()
+                self.conn = adapter.connect(did)
+                self.handle = device.get_handle(UUID)
+                self.bleMsg = ""
+                def getResponse(self, handle, data):
+                    if self.handle == handle:
+                        self.bleMsg = data.decode("hex")
+                self.conn.subscribe(UUID, callback=self.getResponse)
+                resp = self.sendCmd("T"+str(int(time.time())))
+                if "TIME_ACK" not in resp:
+                    resp = self.sendCmd("?")
+                    if "ID=" not in resp:
+                        return False
+                    return True
+                return True
+            except:
+                return False
+
+        elif self.type == "BLE_UNIX":
+            self.adapter = pygatt.GATTToolBackend()
+
+            try:
+                self.adapter.start()
+                self.conn = adapter.connect(did)
+                self.handle = device.get_handle(UUID)
+                self.bleMsg = ""
+                def getResponse(self, handle, data):
+                    if self.handle == handle:
+                        self.bleMsg = data.decode("hex")
+                self.conn.subscribe(UUID, callback=self.getResponse)
+                resp = self.sendCmd("T"+str(int(time.time())))
+                if "TIME_ACK" not in resp:
+                    resp = self.sendCmd("?")
+                    if "ID=" not in resp:
+                        return False
+                    return True
+                return True
+            except:
+                return False
         else:
             return False
 
@@ -70,33 +82,30 @@ class Connection():
             line = self.conn.readline()
             if "RETURN_DATA" in cmd:
                 while "END_TRANSFER" not in line:
-                    longReturn += line + '\n'
+                    if line:
+                        longReturn += line + '\n'
                     line = self.conn.readline()
                 return longReturn
             elif "RESET_DEVICE" in cmd:
                 while "RESET_COMPLETE" not in line:
-                    longReturn += line + '\n'
+                    if line:
+                        longReturn += line + '\n'
                     line = self.conn.readline()
                 return longReturn
             else:
                 return line
-            '''
-        elif self.type == "BLE":
+        elif self.type == "BLE_WINDOWS" or self.type == "BLE_UNIX":
             self.bleMsg = ""
-            self.char.write(cmd)
+            self.conn.char_write_handle(self.handle, [char.encode("hex") for char in cmd])
             if "RETURN_DATA" in cmd:
                 while "END_TRANSFER" not in self.bleMsg:
-                    ok = self.conn.waitForNotifications(5.0)
-                    if not ok:
-                        return None
-                    longReturn += self.bleMsg + '\n'
+                    if self.bleMsg:
+                        longReturn += self.bleMsg + '\n'
                 return longReturn
             elif "RESET_DEVICE" in cmd:
                 while "RESET_COMPLETE" not in self.bleMsg:
-                    ok = self.conn.waitForNotifications(5.0)
-                    if not ok:
-                        return None
-                    longReturn += self.bleMsg + '\n'
+                    if self.bleMsg:
+                        longReturn += self.bleMsg + '\n'
                 return longReturn
             else:
                 ok = self.conn.waitForNotifications(3.0)
@@ -104,17 +113,16 @@ class Connection():
                     return self.bleMsg
                 else:
                     return None
-            '''
         else:
             return None
 
     def close(self):
         if self.type == "SERIAL":
             self.conn.close()
-            '''
-        elif self.type == "BLE":
-            self.conn.disconnect()
-            '''
+        elif self.type == "BLE_WINDOWS":
+            self.adapter.stop()
+        elif self.type == "BLE_UNIX":
+            self.adapter.stop()
 
 
 def ScanSerialConnections(platform):
@@ -138,24 +146,35 @@ def ScanSerialConnections(platform):
     return activePorts, "Scanned serial devices; "+str(len(activePorts))+" available."
 
 
-def ScanBLEConnections():
-    return [], "BLE not supported yet."
-    '''
-    scanner = bluepy.btle.Scanner()
-    try:
-        devices = scanner.scan(1.0)
+def ScanBLEConnections(platform):
+    if platform == "linux" or platform == "linux2" or platform == "darwin": #Unix
+        adapter = pygatt.GATTToolBackend()
+        try:
+            adapter.start()
+            devs = adapter.scan()
 
-        activeDevices = []
-        for dev in devices:
-            if dev.connectable:
-                activeDevices.append(dev.addr)
-        return activeDevices, "Scanned BLE devices; "+str(len(activeDevices))+" available."
-    except bluepy.btle.BTLEException, e:
-        if "le on" in str(e):
+            activeDevices = [dev["address"] for dev in devs]
+            return activeDevices, "Scanned BLE devices; "+str(len(activeDevices))+" available."
+        except pygatt.exceptions.NotConnectedError, e:
             return [], "No BLE capability on this machine."
-        else:
+        except:
             return [], "Unable to scan: "+str(e)
-    '''
+
+    elif platform == "win32": #Windows
+        adapter = pygatt.BGAPIBackend()
+        try:
+            adapter.start()
+            devs = adapter.scan()
+
+            activeDevices = [dev["address"] for dev in devs]
+            return activeDevices, "Scanned BLE devices; "+str(len(activeDevices))+" available."
+        except pygatt.exceptions.NotConnectedError, e:
+            return [], "No BLE capability on this machine."
+        except:
+            return [], "Unable to scan: "+str(e)
+    else:
+        raise EnvironmentError('Unsupported platform')
+
 
 def ParseResp(resp):
     params = {}
@@ -177,17 +196,24 @@ def ConnectSerial(device):
         return None, None
 
 
-def ConnectBLE(device):
-    '''
-    conn = Connection("BLE")
+def ConnectBLEWindows(device):
+    conn = CONNECTION("BLE_WINDOWS")
     ok = conn.connect(device)
     if ok:
         resp = conn.sendCmd("?")
         return conn, ParseResp(resp)
     else:
         return None, None
-    '''
-    return None, None
+
+
+def ConnectBLEUnix(device):
+    conn = CONNECTION("BLE_UNIX")
+    ok = conn.connect(device)
+    if ok:
+        resp = conn.sendCmd("?")
+        return conn, ParseResp(resp)
+    else:
+        return None, None
 
 
 def SetParams(conn, params):

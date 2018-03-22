@@ -56,10 +56,11 @@ class RCDSTool(QtGui.QMainWindow):
         self.ui.DeviceConnectButton.setDisabled(True)
 
     def ScanDevices(self):
+        self.ui.DeviceListComboBox.clear()
         if self.ui.SerialRadioButton.isChecked():
             devices, info = sc.ScanSerialConnections(self.platform)
         elif self.ui.BLERadioButton.isChecked():
-            devices, info = sc.ScanBLEConnections()
+            devices, info = sc.ScanBLEConnections(self.platform)
 
         if devices:
             self.ui.DeviceListComboBox.addItems(devices)
