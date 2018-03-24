@@ -323,33 +323,26 @@
               <item row="2" column="0">
                <widget class="QLabel" name="MinTOLabel">
                 <property name="text">
-                 <string>Min Sec Occluded</string>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="1">
-               <widget class="QDoubleSpinBox" name="MinTDoubleSpinBox">
-                <property name="minimum">
-                 <double>0.100000000000000</double>
+                 <string>Min Milliseconds</string>
                 </property>
                </widget>
               </item>
               <item row="3" column="0">
                <widget class="QLabel" name="MaxTOLabel">
                 <property name="text">
-                 <string>Max Sec Occluded</string>
+                 <string>Max Milliseconds</string>
                 </property>
                </widget>
               </item>
               <item row="4" column="0">
-               <widget class="QLabel" name="MinCMLabel">
+               <widget class="QLabel" name="MinCMHLabel">
                 <property name="text">
-                 <string>Min Centimeter</string>
+                 <string>Min Car Height (cm)</string>
                 </property>
                </widget>
               </item>
               <item row="4" column="1">
-               <widget class="QSpinBox" name="MinCMSpinBox">
+               <widget class="QSpinBox" name="MinCMHSpinBox">
                 <property name="minimum">
                  <number>10</number>
                 </property>
@@ -359,14 +352,14 @@
                </widget>
               </item>
               <item row="5" column="0">
-               <widget class="QLabel" name="MaxCMLabel">
+               <widget class="QLabel" name="MaxCMHLabel">
                 <property name="text">
-                 <string>Max Centimeter</string>
+                 <string>Max Car Height (cm)</string>
                 </property>
                </widget>
               </item>
               <item row="5" column="1">
-               <widget class="QSpinBox" name="MaxCMSpinBox">
+               <widget class="QSpinBox" name="MaxCMHSpinBox">
                 <property name="minimum">
                  <number>10</number>
                 </property>
@@ -379,26 +372,29 @@
                </widget>
               </item>
               <item row="6" column="0">
-               <widget class="QLabel" name="MinMDLabel">
+               <widget class="QLabel" name="MinCMLLabel">
                 <property name="text">
-                 <string>Min ms Delta</string>
+                 <string>Min Car Length (cm)</string>
                 </property>
                </widget>
               </item>
               <item row="6" column="1">
-               <widget class="QSpinBox" name="MinMDSpinBox"/>
+               <widget class="QSpinBox" name="MinCMLSpinBox"/>
               </item>
               <item row="7" column="0">
-               <widget class="QLabel" name="MaxMDLabel">
+               <widget class="QLabel" name="MaxCMLLabel">
                 <property name="text">
-                 <string>Max ms Delta</string>
+                 <string>Max Car Length (cm)</string>
                 </property>
                </widget>
               </item>
               <item row="7" column="1">
-               <widget class="QSpinBox" name="MaxMDSpinBox">
+               <widget class="QSpinBox" name="MaxCMLSpinBox">
+                <property name="maximum">
+                 <number>9999</number>
+                </property>
                 <property name="value">
-                 <number>99</number>
+                 <number>9999</number>
                 </property>
                </widget>
               </item>
@@ -416,13 +412,6 @@
                 </property>
                </widget>
               </item>
-              <item row="3" column="1">
-               <widget class="QDoubleSpinBox" name="MaxTDoubleSpinBox">
-                <property name="value">
-                 <double>99.000000000000000</double>
-                </property>
-               </widget>
-              </item>
               <item row="8" column="1">
                <widget class="QSpinBox" name="MinSSpinBox"/>
               </item>
@@ -430,6 +419,23 @@
                <widget class="QSpinBox" name="MaxSSpinBox">
                 <property name="value">
                  <number>99</number>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="1">
+               <widget class="QSpinBox" name="MinTSpinBox">
+                <property name="maximum">
+                 <number>99999</number>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="1">
+               <widget class="QSpinBox" name="MaxTSpinBox">
+                <property name="maximum">
+                 <number>99999</number>
+                </property>
+                <property name="value">
+                 <number>99999</number>
                 </property>
                </widget>
               </item>
@@ -494,7 +500,7 @@
                </widget>
               </item>
               <item>
-               <widget class="QListView" name="FileListView">
+               <widget class="QListWidget" name="GraphFileListWidget">
                 <property name="selectionMode">
                  <enum>QAbstractItemView::MultiSelection</enum>
                 </property>
