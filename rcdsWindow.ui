@@ -284,6 +284,20 @@
               </item>
               <item row="0" column="1">
                <widget class="QDateTimeEdit" name="EDateTimeEdit">
+                <property name="maximumDate">
+                 <date>
+                  <year>2037</year>
+                  <month>12</month>
+                  <day>31</day>
+                 </date>
+                </property>
+                <property name="minimumDate">
+                 <date>
+                  <year>2000</year>
+                  <month>1</month>
+                  <day>1</day>
+                 </date>
+                </property>
                 <property name="calendarPopup">
                  <bool>true</bool>
                 </property>
@@ -300,27 +314,31 @@
                <widget class="QDateTimeEdit" name="LDateTimeEdit">
                 <property name="date">
                  <date>
-                  <year>2099</year>
+                  <year>2037</year>
                   <month>12</month>
                   <day>31</day>
                  </date>
                 </property>
                 <property name="time">
                  <time>
-                  <hour>0</hour>
-                  <minute>0</minute>
-                  <second>0</second>
-                 </time>
-                </property>
-                <property name="maximumDateTime">
-                 <datetime>
                   <hour>23</hour>
                   <minute>59</minute>
                   <second>59</second>
-                  <year>7999</year>
+                 </time>
+                </property>
+                <property name="maximumDate">
+                 <date>
+                  <year>2037</year>
                   <month>12</month>
-                  <day>30</day>
-                 </datetime>
+                  <day>31</day>
+                 </date>
+                </property>
+                <property name="minimumDate">
+                 <date>
+                  <year>2000</year>
+                  <month>1</month>
+                  <day>1</day>
+                 </date>
                 </property>
                 <property name="calendarPopup">
                  <bool>true</bool>
