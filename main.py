@@ -34,6 +34,8 @@ class RCDSTool(QtGui.QMainWindow):
         self.ui.ResetButton.clicked.connect(self.ResetDevice)
 
         self.filter_path = os.getcwd()
+        for key in dv.graph_handles.keys():
+            self.ui.DataComboBox.addItem(key)
         self.ui.FilterSelectFolderButton.clicked.connect(self.SelectFilterFolder)
         self.ui.ShowDataButton.clicked.connect(self.ShowFilteredData)
         self.ui.SavetoFileButton.clicked.connect(self.SaveFilteredData)
@@ -208,12 +210,12 @@ class RCDSTool(QtGui.QMainWindow):
         filters = {}
         filters["EDateTime"] = int(self.ui.EDateTimeEdit.dateTime().toTime_t())
         filters["LDateTime"] = int(self.ui.LDateTimeEdit.dateTime().toTime_t())
-        filters["MinTO"] = self.ui.MinTDoubleSpinBox.value()
-        filters["MinTO"] = self.ui.MaxTDoubleSpinBox.value()
-        filters["MinCM"] = self.ui.MinCMSpinBox.value()
-        filters["MaxCM"] = self.ui.MaxCMSpinBox.value()
-        filters["MinMD"] = self.ui.MinMDSpinBox.value()
-        filters["MaxMD"] = self.ui.MaxMDSpinBox.value()
+        filters["MinTO"] = self.ui.MinTSpinBox.value()
+        filters["MinTO"] = self.ui.MaxTSpinBox.value()
+        filters["MinCMH"] = self.ui.MinCMHSpinBox.value()
+        filters["MaxCMH"] = self.ui.MaxCMHSpinBox.value()
+        filters["MinCML"] = self.ui.MinCMLSpinBox.value()
+        filters["MaxCML"] = self.ui.MaxCMLSpinBox.value()
         filters["MinS"] = self.ui.MinSSpinBox.value()
         filters["MAxS"] = self.ui.MaxSSpinBox.value()
         return filters
@@ -235,7 +237,7 @@ class RCDSTool(QtGui.QMainWindow):
         if self.data_path:
             files = [f for f in os.listdir(self.data_path) if (os.path.isfile(os.path.join(self.data_path, f)) and '.csv' in f)]
             if files:
-                self.ui.DataFileListWidget.addItems(files)
+                self.ui.GraphFileListWidget.addItems(files)
                 self.ui.DataShowButton.setDisabled(False)
                 self.ui.SaveImageButton.setDisabled(False)
             else:
@@ -248,8 +250,8 @@ class RCDSTool(QtGui.QMainWindow):
     def GraphData(self):
         self.ui.DataGraphicsView.getPlotItem().clear()
         graph_func = str(self.ui.DataComboBox.currentText())
-        selectedFiles = [str(x.text()) for x in self.ui.DataFileListWidget.selectedItems()]
-        x, y, xaxis, xunits, yaxis, yunits, title = dv.graph_handles[graph_func](selectedFiles, self.ui.DataGraphicsView)
+        selectedFiles = [os.path.join(self.data_path, str(x.text())) for x in self.ui.GraphFileListWidget.selectedItems()]
+        dv.graph_handles[graph_func](selectedFiles, self.ui.DataGraphicsView)
 
     def SaveGraph(self):
         name = str(QtGui.QFileDialog.getSaveFileName(self, "Save Graph as Image", self.data_path, selectedFilter='*.txt'))
