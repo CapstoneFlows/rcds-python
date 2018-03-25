@@ -19,8 +19,9 @@ def ProcessData(path, files, filters):
     				(speed < filters["MinS"]) and
     				(speed > filters["MaxS"]):
 						np.append(filterData, np.array(row), axis=0) 
-
     return filterData;
 
 def SaveData(data, savePath):
-    pass
+	with open(os.path.join(path,file),'wb') as csvfile:
+                csvwriter = csv.writer(csvfile, quoting=csv.QUOTE_ALL, delimiter=',')
+                csvwriter.writerows(filterData)
