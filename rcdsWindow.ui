@@ -268,6 +268,13 @@
             </item>
             <item>
              <layout class="QGridLayout" name="gridLayout_5">
+              <item row="5" column="0">
+               <widget class="QLabel" name="MinCMHLabel">
+                <property name="text">
+                 <string>Min Car Height (cm)</string>
+                </property>
+               </widget>
+              </item>
               <item row="0" column="0">
                <widget class="QLabel" name="ETLabel">
                 <property name="text">
@@ -334,14 +341,7 @@
                 </property>
                </widget>
               </item>
-              <item row="4" column="0">
-               <widget class="QLabel" name="MinCMHLabel">
-                <property name="text">
-                 <string>Min Car Height (cm)</string>
-                </property>
-               </widget>
-              </item>
-              <item row="4" column="1">
+              <item row="5" column="1">
                <widget class="QSpinBox" name="MinCMHSpinBox">
                 <property name="minimum">
                  <number>10</number>
@@ -351,14 +351,14 @@
                 </property>
                </widget>
               </item>
-              <item row="5" column="0">
+              <item row="6" column="0">
                <widget class="QLabel" name="MaxCMHLabel">
                 <property name="text">
                  <string>Max Car Height (cm)</string>
                 </property>
                </widget>
               </item>
-              <item row="5" column="1">
+              <item row="6" column="1">
                <widget class="QSpinBox" name="MaxCMHSpinBox">
                 <property name="minimum">
                  <number>10</number>
@@ -371,24 +371,24 @@
                 </property>
                </widget>
               </item>
-              <item row="6" column="0">
+              <item row="7" column="0">
                <widget class="QLabel" name="MinCMLLabel">
                 <property name="text">
                  <string>Min Car Length (cm)</string>
                 </property>
                </widget>
               </item>
-              <item row="6" column="1">
+              <item row="7" column="1">
                <widget class="QSpinBox" name="MinCMLSpinBox"/>
               </item>
-              <item row="7" column="0">
+              <item row="8" column="0">
                <widget class="QLabel" name="MaxCMLLabel">
                 <property name="text">
                  <string>Max Car Length (cm)</string>
                 </property>
                </widget>
               </item>
-              <item row="7" column="1">
+              <item row="8" column="1">
                <widget class="QSpinBox" name="MaxCMLSpinBox">
                 <property name="maximum">
                  <number>9999</number>
@@ -398,24 +398,24 @@
                 </property>
                </widget>
               </item>
-              <item row="8" column="0">
+              <item row="9" column="0">
                <widget class="QLabel" name="MinSLabel">
                 <property name="text">
-                 <string>Min Speed (mph)</string>
+                 <string>Min Speed (kmh)</string>
                 </property>
                </widget>
               </item>
-              <item row="9" column="0">
+              <item row="10" column="0">
                <widget class="QLabel" name="MaxSLabel">
                 <property name="text">
-                 <string>Max Speed (mph)</string>
+                 <string>Max Speed (kmh)</string>
                 </property>
                </widget>
               </item>
-              <item row="8" column="1">
+              <item row="9" column="1">
                <widget class="QSpinBox" name="MinSSpinBox"/>
               </item>
-              <item row="9" column="1">
+              <item row="10" column="1">
                <widget class="QSpinBox" name="MaxSSpinBox">
                 <property name="value">
                  <number>99</number>
@@ -436,6 +436,16 @@
                 </property>
                 <property name="value">
                  <number>99999</number>
+                </property>
+               </widget>
+              </item>
+              <item row="4" column="1">
+               <widget class="QComboBox" name="UnitsComboBox"/>
+              </item>
+              <item row="4" column="0">
+               <widget class="QLabel" name="UnitsLabel">
+                <property name="text">
+                 <string>Units (Imperial/SI)</string>
                 </property>
                </widget>
               </item>
