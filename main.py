@@ -254,11 +254,11 @@ class RCDSTool(QtGui.QMainWindow):
     def ShowFilteredData(self):
         selectedFiles = [str(x.text()) for x in self.ui.FilterFileListWidget.selectedItems()]
         filterData = df.ProcessData(self.filter_path, selectedFiles, self.GetFilters())
-        self.ui.DataPlainTextEdit.setPlainText(json.dumps(filterData.tolist()).replace ('],', '],\n'))
+        self.ui.DataPlainTextEdit.setPlainText(filterData)
 
     def SaveFilteredData(self):
         name = str(QtGui.QFileDialog.getSaveFileName(self, "Save Filtered Data File", self.filter_path, selectedFilter='*.csv'))
-        df.SaveData(name, np.array(json.loads(str(self.ui.DataPlainTextEdit.toPlainText()).replace ('],\n', '],'))))
+        df.SaveData(name, str(self.ui.DataPlainTextEdit.toPlainText()))
 
 ###############################################################################
     # Data Visualization Functions

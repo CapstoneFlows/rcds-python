@@ -1,5 +1,6 @@
 import csv
 import os
+import json
 import numpy as np
 
 def ProcessData(path, files, filters):
@@ -24,8 +25,10 @@ def ProcessData(path, files, filters):
                             filterData = np.array(row).astype(int)
                         else:
                             filterData = np.vstack((filterData, np.array(row).astype(int))) 
+    filterData = json.dumps(filterData.tolist()).replace('],', '],\n')
     return filterData
 
 def SaveData(path, data):
+    data = np.array(json.loads(data.replace ('],\n', '],')))
     np.savetxt(path, data, fmt='%i', delimiter=",")
     
