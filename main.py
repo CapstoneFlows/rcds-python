@@ -1,7 +1,10 @@
 import os
 import sys
+import json
+import numpy as np
 from PyQt4 import QtCore, QtGui
-from rcdsWindow import Ui_MainWindow
+
+from rcdsWindow import Ui_MainWindow, _translate    
 import sensorControl as sc
 import dataFiltering as df
 import dataVisualization as dv
@@ -34,13 +37,17 @@ class RCDSTool(QtGui.QMainWindow):
         self.ui.ResetButton.clicked.connect(self.ResetDevice)
 
         self.filter_path = os.getcwd()
-        for key in dv.graph_handles.keys():
-            self.ui.DataComboBox.addItem(key)
+        self.ui.UnitsComboBox.addItem("SI")
+        self.ui.UnitsComboBox.addItem("Imperial")
+        self.ChangeUnits()
+        self.ui.UnitsComboBox.currentIndexChanged.connect(self.ChangeUnits)
         self.ui.FilterSelectFolderButton.clicked.connect(self.SelectFilterFolder)
         self.ui.ShowDataButton.clicked.connect(self.ShowFilteredData)
         self.ui.SavetoFileButton.clicked.connect(self.SaveFilteredData)
 
         self.data_path = os.getcwd()
+        for key in dv.graph_handles.keys():
+            self.ui.DataComboBox.addItem(key)
         self.ui.SelectFolderButton.clicked.connect(self.SelectVisualizationFolder)
         self.ui.DataShowButton.clicked.connect(self.GraphData)
         self.ui.SaveImageButton.clicked.connect(self.SaveGraph)
@@ -191,6 +198,22 @@ class RCDSTool(QtGui.QMainWindow):
 ###############################################################################
     # Data Filtering Functions
 
+    def ChangeUnits(self):
+        if str(self.ui.UnitsComboBox.currentText()) == "Imperial":
+            self.ui.MinCMHLabel.setText(_translate("MainWindow", "Min Car Height (in)", None))
+            self.ui.MaxCMHLabel.setText(_translate("MainWindow", "Max Car Height (in)", None))
+            self.ui.MinCMLLabel.setText(_translate("MainWindow", "Min Car Length (in)", None))
+            self.ui.MaxCMLLabel.setText(_translate("MainWindow", "Max Car Length (in)", None))
+            self.ui.MinSLabel.setText(_translate("MainWindow", "Min Speed (mph)", None))
+            self.ui.MaxSLabel.setText(_translate("MainWindow", "Max Speed (mph)", None))
+        else:
+            self.ui.MinCMHLabel.setText(_translate("MainWindow", "Min Car Height (cm)", None))
+            self.ui.MaxCMHLabel.setText(_translate("MainWindow", "Max Car Height (cm)", None))
+            self.ui.MinCMLLabel.setText(_translate("MainWindow", "Min Car Length (cm)", None))
+            self.ui.MaxCMLLabel.setText(_translate("MainWindow", "Max Car Length (cm)", None))
+            self.ui.MinSLabel.setText(_translate("MainWindow", "Min Speed (kmh)", None))
+            self.ui.MaxSLabel.setText(_translate("MainWindow", "Max Speed (kmh)", None))
+
     def SelectFilterFolder(self):
         self.filter_path = str(QtGui.QFileDialog.getExistingDirectory(self, "Select Filter Directory", self.filter_path))
         if self.filter_path:
@@ -211,23 +234,31 @@ class RCDSTool(QtGui.QMainWindow):
         filters["EDateTime"] = int(self.ui.EDateTimeEdit.dateTime().toTime_t())
         filters["LDateTime"] = int(self.ui.LDateTimeEdit.dateTime().toTime_t())
         filters["MinTO"] = self.ui.MinTSpinBox.value()
-        filters["MinTO"] = self.ui.MaxTSpinBox.value()
-        filters["MinCMH"] = self.ui.MinCMHSpinBox.value()
-        filters["MaxCMH"] = self.ui.MaxCMHSpinBox.value()
-        filters["MinCML"] = self.ui.MinCMLSpinBox.value()
-        filters["MaxCML"] = self.ui.MaxCMLSpinBox.value()
-        filters["MinS"] = self.ui.MinSSpinBox.value()
-        filters["MAxS"] = self.ui.MaxSSpinBox.value()
+        filters["MaxTO"] = self.ui.MaxTSpinBox.value()
+        if str(self.ui.UnitsComboBox.currentText()) == "Imperial":
+            filters["MinCMH"] = int(float(self.ui.MinCMHSpinBox.value()) * 2.54)
+            filters["MaxCMH"] = int(float(self.ui.MaxCMHSpinBox.value()) * 2.54)
+            filters["MinCML"] = int(float(self.ui.MinCMLSpinBox.value()) * 2.54)
+            filters["MaxCML"] = int(float(self.ui.MaxCMLSpinBox.value()) * 2.54)
+            filters["MinS"] = int(float(self.ui.MinSSpinBox.value()) * 1.60934)
+            filters["MaxS"] = int(float(self.ui.MaxSSpinBox.value()) * 1.60934)
+        else:
+            filters["MinCMH"] = self.ui.MinCMHSpinBox.value()
+            filters["MaxCMH"] = self.ui.MaxCMHSpinBox.value()
+            filters["MinCML"] = self.ui.MinCMLSpinBox.value()
+            filters["MaxCML"] = self.ui.MaxCMLSpinBox.value()
+            filters["MinS"] = self.ui.MinSSpinBox.value()
+            filters["MaxS"] = self.ui.MaxSSpinBox.value()
         return filters
 
     def ShowFilteredData(self):
         selectedFiles = [str(x.text()) for x in self.ui.FilterFileListWidget.selectedItems()]
         filterData = df.ProcessData(self.filter_path, selectedFiles, self.GetFilters())
-        self.ui.DataPlainTextEdit.setPlainText(filterData)
+        self.ui.DataPlainTextEdit.setPlainText(json.dumps(filterData.tolist()).replace ('],', '],\n'))
 
     def SaveFilteredData(self):
-        name = str(QtGui.QFileDialog.getSaveFileName(self, "Save Filtered Data File", self.filter_path))
-        df.SaveData(name, str(self.ui.DataPlainTextEdit.toPlainText()))
+        name = str(QtGui.QFileDialog.getSaveFileName(self, "Save Filtered Data File", self.filter_path, selectedFilter='*.csv'))
+        df.SaveData(name, np.array(json.loads(str(self.ui.DataPlainTextEdit.toPlainText()).replace ('],\n', '],'))))
 
 ###############################################################################
     # Data Visualization Functions
@@ -254,7 +285,7 @@ class RCDSTool(QtGui.QMainWindow):
         dv.graph_handles[graph_func](selectedFiles, self.ui.DataGraphicsView)
 
     def SaveGraph(self):
-        name = str(QtGui.QFileDialog.getSaveFileName(self, "Save Graph as Image", self.data_path, selectedFilter='*.txt'))
+        name = str(QtGui.QFileDialog.getSaveFileName(self, "Save Graph as Image", self.data_path, selectedFilter='*.png'))
         dv.SaveGraph(name, self.ui.DataGraphicsView)
 
 ###############################################################################
