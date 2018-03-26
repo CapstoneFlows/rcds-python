@@ -243,12 +243,12 @@ class RCDSTool(QtGui.QMainWindow):
             filters["MinS"] = int(float(self.ui.MinSSpinBox.value()) * 1.60934)
             filters["MaxS"] = int(float(self.ui.MaxSSpinBox.value()) * 1.60934)
         else:
-            filters["MinCMH"] = self.ui.MinCMHSpinBox.value()
-            filters["MaxCMH"] = self.ui.MaxCMHSpinBox.value()
-            filters["MinCML"] = self.ui.MinCMLSpinBox.value()
-            filters["MaxCML"] = self.ui.MaxCMLSpinBox.value()
-            filters["MinS"] = self.ui.MinSSpinBox.value()
-            filters["MaxS"] = self.ui.MaxSSpinBox.value()
+            filters["MinCMH"] = int(self.ui.MinCMHSpinBox.value())
+            filters["MaxCMH"] = int(self.ui.MaxCMHSpinBox.value())
+            filters["MinCML"] = int(self.ui.MinCMLSpinBox.value())
+            filters["MaxCML"] = int(self.ui.MaxCMLSpinBox.value())
+            filters["MinS"] = int(self.ui.MinSSpinBox.value())
+            filters["MaxS"] = int(self.ui.MaxSSpinBox.value())
         return filters
 
     def ShowFilteredData(self):
