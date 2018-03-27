@@ -19,7 +19,7 @@ class Connection():
             try:
                 self.conn = serial.Serial(did, timeout=1, writeTimeout=1)
                 resp = self.sendCmd("T"+str(int(time.time())))
-                if "TIME_ACK" not in resp:
+                if "TIME_ACK" not in resp and "TIME_SYNCED" not in resp:
                     resp = self.sendCmd("?")
                     if "ID=" not in resp:
                         return False
@@ -41,7 +41,7 @@ class Connection():
                         self.bleMsg = data.decode("hex")
                 self.conn.subscribe(UUID, callback=self.getResponse)
                 resp = self.sendCmd("T"+str(int(time.time())))
-                if "TIME_ACK" not in resp:
+                if "TIME_ACK" not in resp and "TIME_SYNCED" not in resp:
                     resp = self.sendCmd("?")
                     if "ID=" not in resp:
                         return False
@@ -63,7 +63,7 @@ class Connection():
                         self.bleMsg = data.decode("hex")
                 self.conn.subscribe(UUID, callback=self.getResponse)
                 resp = self.sendCmd("T"+str(int(time.time())))
-                if "TIME_ACK" not in resp:
+                if "TIME_ACK" not in resp and "TIME_SYNCED" not in resp:
                     resp = self.sendCmd("?")
                     if "ID=" not in resp:
                         return False
@@ -80,6 +80,8 @@ class Connection():
         if self.type == "SERIAL":
             self.conn.write(cmd)
             line = self.conn.readline()
+            if line == '':
+                line = self.conn.readline()
             if "RETURN_DATA" in cmd:
                 while "END_TRANSFER" not in line:
                     if line:
@@ -190,6 +192,7 @@ def ConnectSerial(device):
     conn = Connection("SERIAL")
     ok = conn.connect(device)
     if ok:
+        time.sleep(1)
         resp = conn.sendCmd("?")
         return conn, ParseResp(resp)
     else:
