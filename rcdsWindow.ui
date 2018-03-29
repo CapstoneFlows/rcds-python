@@ -605,6 +605,33 @@
            <layout class="QHBoxLayout" name="horizontalLayout_9" stretch="4,1">
             <item>
              <layout class="QGridLayout" name="gridLayout_3">
+              <item row="1" column="1">
+               <widget class="QPushButton" name="ClearButton">
+                <property name="text">
+                 <string>Clear Devices</string>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="3">
+               <widget class="QPushButton" name="MapSaveButton">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
+                <property name="text">
+                 <string>Save Order Data</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="3">
+               <widget class="QPushButton" name="CompileButton">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
+                <property name="text">
+                 <string>Compile Data</string>
+                </property>
+               </widget>
+              </item>
               <item row="2" column="2" alignment="Qt::AlignHCenter|Qt::AlignVCenter">
                <widget class="QLabel" name="intersection">
                 <property name="minimumSize">
@@ -615,82 +642,6 @@
                 </property>
                 <property name="text">
                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/intersection/intersection.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignCenter</set>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="3">
-               <widget class="QLabel" name="EastLabel">
-                <property name="text">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/intersection/arrowUnknown270.jpg&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignCenter</set>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="1">
-               <widget class="QLabel" name="NorthLabel">
-                <property name="text">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/intersection/arrowUnknown180.jpg&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignCenter</set>
-                </property>
-               </widget>
-              </item>
-              <item row="4" column="2">
-               <layout class="QHBoxLayout" name="horizontalLayout_7">
-                <item>
-                 <widget class="QSlider" name="PlaySlider">
-                  <property name="enabled">
-                   <bool>false</bool>
-                  </property>
-                  <property name="maximum">
-                   <number>500</number>
-                  </property>
-                  <property name="singleStep">
-                   <number>1</number>
-                  </property>
-                  <property name="orientation">
-                   <enum>Qt::Horizontal</enum>
-                  </property>
-                  <property name="tickPosition">
-                   <enum>QSlider::TicksBothSides</enum>
-                  </property>
-                  <property name="tickInterval">
-                   <number>25</number>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QPushButton" name="PlayPauseButton">
-                  <property name="enabled">
-                   <bool>false</bool>
-                  </property>
-                  <property name="text">
-                   <string>Play</string>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </item>
-              <item row="4" column="1">
-               <widget class="QLabel" name="WestLabel">
-                <property name="text">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/intersection/arrowUnknown90.jpg&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignCenter</set>
-                </property>
-               </widget>
-              </item>
-              <item row="4" column="3">
-               <widget class="QLabel" name="SouthLabel">
-                <property name="text">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/intersection/arrowUnknown0.jpg&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                 </property>
                 <property name="alignment">
                  <set>Qt::AlignCenter</set>
@@ -713,15 +664,16 @@
                  </spacer>
                 </item>
                 <item>
-                 <widget class="QDateTimeEdit" name="mapDateTimeEdit">
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
+                 <widget class="QPushButton" name="nInButton">
+                  <property name="text">
+                   <string>N In</string>
                   </property>
-                  <property name="readOnly">
-                   <bool>true</bool>
-                  </property>
-                  <property name="buttonSymbols">
-                   <enum>QAbstractSpinBox::NoButtons</enum>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="nOutButton">
+                  <property name="text">
+                   <string>N Out</string>
                   </property>
                  </widget>
                 </item>
@@ -743,20 +695,6 @@
               <item row="2" column="1">
                <layout class="QVBoxLayout" name="verticalLayout_13">
                 <item>
-                 <widget class="QPushButton" name="nInButton">
-                  <property name="text">
-                   <string>N In</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QPushButton" name="nOutButton">
-                  <property name="text">
-                   <string>N Out</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
                  <spacer name="verticalSpacer_2">
                   <property name="orientation">
                    <enum>Qt::Vertical</enum>
@@ -770,6 +708,13 @@
                  </spacer>
                 </item>
                 <item>
+                 <widget class="QPushButton" name="wOutButton">
+                  <property name="text">
+                   <string>W Out</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
                  <widget class="QPushButton" name="wInButton">
                   <property name="text">
                    <string>W In</string>
@@ -777,11 +722,17 @@
                  </widget>
                 </item>
                 <item>
-                 <widget class="QPushButton" name="wOutButton">
-                  <property name="text">
-                   <string>W Out</string>
+                 <spacer name="verticalSpacer_6">
+                  <property name="orientation">
+                   <enum>Qt::Vertical</enum>
                   </property>
-                 </widget>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>20</width>
+                    <height>40</height>
+                   </size>
+                  </property>
+                 </spacer>
                 </item>
                </layout>
               </item>
@@ -790,6 +741,19 @@
                 <property name="sizeConstraint">
                  <enum>QLayout::SetDefaultConstraint</enum>
                 </property>
+                <item>
+                 <spacer name="verticalSpacer_7">
+                  <property name="orientation">
+                   <enum>Qt::Vertical</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>20</width>
+                    <height>40</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
                 <item>
                  <widget class="QPushButton" name="eInButton">
                   <property name="text">
@@ -817,12 +781,22 @@
                   </property>
                  </spacer>
                 </item>
+               </layout>
+              </item>
+              <item row="3" column="2">
+               <layout class="QHBoxLayout" name="horizontalLayout_7">
                 <item>
-                 <widget class="QPushButton" name="sInButton">
-                  <property name="text">
-                   <string>S In</string>
+                 <spacer name="horizontalSpacer_11">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
                   </property>
-                 </widget>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
                 </item>
                 <item>
                  <widget class="QPushButton" name="sOutButton">
@@ -831,35 +805,32 @@
                   </property>
                  </widget>
                 </item>
+                <item>
+                 <widget class="QPushButton" name="sInButton">
+                  <property name="text">
+                   <string>S In</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <spacer name="horizontalSpacer_12">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
                </layout>
               </item>
              </layout>
             </item>
             <item>
              <layout class="QVBoxLayout" name="verticalLayout_10">
-              <item>
-               <widget class="QPushButton" name="MapSaveButton">
-                <property name="enabled">
-                 <bool>false</bool>
-                </property>
-                <property name="text">
-                 <string>Save Order Data</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <spacer name="verticalSpacer_5">
-                <property name="orientation">
-                 <enum>Qt::Vertical</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>20</width>
-                  <height>40</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
               <item>
                <layout class="QHBoxLayout" name="horizontalLayout_10">
                 <item>
@@ -876,14 +847,14 @@
                  </spacer>
                 </item>
                 <item alignment="Qt::AlignHCenter">
-                 <widget class="QLabel" name="straight_label">
+                 <widget class="QLabel" name="NSlabel">
                   <property name="text">
-                   <string>Straight:</string>
+                   <string>NS:</string>
                   </property>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLabel" name="straight_num_label">
+                 <widget class="QLabel" name="NSnumlabel">
                   <property name="text">
                    <string>0</string>
                   </property>
@@ -920,9 +891,9 @@
                  </spacer>
                 </item>
                 <item>
-                 <widget class="QLabel" name="right_label">
+                 <widget class="QLabel" name="SNlabel">
                   <property name="text">
-                   <string>Right:</string>
+                   <string>SN:</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -930,7 +901,7 @@
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLabel" name="right_num_label">
+                 <widget class="QLabel" name="SNnumlabel">
                   <property name="text">
                    <string>0</string>
                   </property>
@@ -967,9 +938,9 @@
                  </spacer>
                 </item>
                 <item>
-                 <widget class="QLabel" name="left_label">
+                 <widget class="QLabel" name="EWlabel">
                   <property name="text">
-                   <string>Left:</string>
+                   <string>EW:</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -977,7 +948,7 @@
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLabel" name="left_num_label">
+                 <widget class="QLabel" name="EWnumlabel">
                   <property name="text">
                    <string>0</string>
                   </property>
@@ -1014,9 +985,9 @@
                  </spacer>
                 </item>
                 <item>
-                 <widget class="QLabel" name="unknown_label">
+                 <widget class="QLabel" name="WElabel">
                   <property name="text">
-                   <string>Unknown:</string>
+                   <string>WE:</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -1024,7 +995,7 @@
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLabel" name="unknown_num_label">
+                 <widget class="QLabel" name="WEnumlabel">
                   <property name="text">
                    <string>0</string>
                   </property>
@@ -1046,17 +1017,400 @@
                </layout>
               </item>
               <item>
-               <spacer name="verticalSpacer_4">
-                <property name="orientation">
-                 <enum>Qt::Vertical</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>20</width>
-                  <height>40</height>
-                 </size>
-                </property>
-               </spacer>
+               <layout class="QHBoxLayout" name="horizontalLayout_15">
+                <item>
+                 <spacer name="horizontalSpacer_13">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+                <item>
+                 <widget class="QLabel" name="NWlabel">
+                  <property name="text">
+                   <string>NW:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="NWnumlabel">
+                  <property name="text">
+                   <string>0</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <spacer name="horizontalSpacer_28">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_16">
+                <item>
+                 <spacer name="horizontalSpacer_14">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+                <item>
+                 <widget class="QLabel" name="NElabel">
+                  <property name="text">
+                   <string>NE:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="NEnumlabel">
+                  <property name="text">
+                   <string>0</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <spacer name="horizontalSpacer_27">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_17">
+                <item>
+                 <spacer name="horizontalSpacer_15">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+                <item>
+                 <widget class="QLabel" name="SWlabel">
+                  <property name="text">
+                   <string>SW:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="SWnumlabel">
+                  <property name="text">
+                   <string>0</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <spacer name="horizontalSpacer_26">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_18">
+                <item>
+                 <spacer name="horizontalSpacer_16">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+                <item>
+                 <widget class="QLabel" name="SElabel">
+                  <property name="text">
+                   <string>SE:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="SEnumlabel">
+                  <property name="text">
+                   <string>0</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <spacer name="horizontalSpacer_25">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_19">
+                <item>
+                 <spacer name="horizontalSpacer_17">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+                <item>
+                 <widget class="QLabel" name="ENlabel">
+                  <property name="text">
+                   <string>EN:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="ENnumlabel">
+                  <property name="text">
+                   <string>0</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <spacer name="horizontalSpacer_24">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_20">
+                <item>
+                 <spacer name="horizontalSpacer_18">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+                <item>
+                 <widget class="QLabel" name="ESlabel">
+                  <property name="text">
+                   <string>ES:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="ESnumlabel">
+                  <property name="text">
+                   <string>0</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <spacer name="horizontalSpacer_23">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_21">
+                <item>
+                 <spacer name="horizontalSpacer_19">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+                <item>
+                 <widget class="QLabel" name="WNlabel">
+                  <property name="text">
+                   <string>WN:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="WNnumlabel">
+                  <property name="text">
+                   <string>0</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <spacer name="horizontalSpacer_22">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_22">
+                <item>
+                 <spacer name="horizontalSpacer_20">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+                <item>
+                 <widget class="QLabel" name="WSlabel">
+                  <property name="text">
+                   <string>WS:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="WSnumlabel">
+                  <property name="text">
+                   <string>0</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <spacer name="horizontalSpacer_21">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_14">
+                <item>
+                 <spacer name="horizontalSpacer_29">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+                <item>
+                 <widget class="QLabel" name="unknownlabel">
+                  <property name="text">
+                   <string>Unknown:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="unknownnumlabel">
+                  <property name="text">
+                   <string>0</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <spacer name="horizontalSpacer_30">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+               </layout>
               </item>
               <item>
                <widget class="QGroupBox" name="dirCheckGroupBox">
@@ -1135,27 +1489,6 @@
                   </widget>
                  </item>
                 </layout>
-               </widget>
-              </item>
-              <item>
-               <widget class="QPushButton" name="ClearButton">
-                <property name="text">
-                 <string>Clear Devices</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLabel" name="playback_label">
-                <property name="text">
-                 <string>Playback Speed</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QComboBox" name="PlaybackComboBox">
-                <property name="enabled">
-                 <bool>false</bool>
-                </property>
                </widget>
               </item>
              </layout>
