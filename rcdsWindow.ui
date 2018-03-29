@@ -740,9 +740,16 @@
               <item row="2" column="1">
                <layout class="QVBoxLayout" name="verticalLayout_13">
                 <item>
-                 <widget class="QPushButton" name="nButton">
+                 <widget class="QPushButton" name="nInButton">
                   <property name="text">
-                   <string>N</string>
+                   <string>N In</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="nOutButton">
+                  <property name="text">
+                   <string>N Out</string>
                   </property>
                  </widget>
                 </item>
@@ -760,9 +767,16 @@
                  </spacer>
                 </item>
                 <item>
-                 <widget class="QPushButton" name="wButton">
+                 <widget class="QPushButton" name="wInButton">
                   <property name="text">
-                   <string>W</string>
+                   <string>W In</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="wOutButton">
+                  <property name="text">
+                   <string>W Out</string>
                   </property>
                  </widget>
                 </item>
@@ -774,9 +788,16 @@
                  <enum>QLayout::SetDefaultConstraint</enum>
                 </property>
                 <item>
-                 <widget class="QPushButton" name="eButton">
+                 <widget class="QPushButton" name="eInButton">
                   <property name="text">
-                   <string>E</string>
+                   <string>E In</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="eOutButton">
+                  <property name="text">
+                   <string>E Out</string>
                   </property>
                  </widget>
                 </item>
@@ -794,9 +815,16 @@
                  </spacer>
                 </item>
                 <item>
-                 <widget class="QPushButton" name="sButton">
+                 <widget class="QPushButton" name="sInButton">
                   <property name="text">
-                   <string>S</string>
+                   <string>S In</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="sOutButton">
+                  <property name="text">
+                   <string>S Out</string>
                   </property>
                  </widget>
                 </item>
@@ -1047,6 +1075,9 @@
                    <property name="checked">
                     <bool>false</bool>
                    </property>
+                   <property name="tristate">
+                    <bool>true</bool>
+                   </property>
                   </widget>
                  </item>
                  <item>
@@ -1059,6 +1090,9 @@
                    </property>
                    <property name="text">
                     <string>East</string>
+                   </property>
+                   <property name="tristate">
+                    <bool>true</bool>
                    </property>
                   </widget>
                  </item>
@@ -1073,6 +1107,9 @@
                    <property name="text">
                     <string>South</string>
                    </property>
+                   <property name="tristate">
+                    <bool>true</bool>
+                   </property>
                   </widget>
                  </item>
                  <item>
@@ -1085,6 +1122,9 @@
                    </property>
                    <property name="text">
                     <string>West</string>
+                   </property>
+                   <property name="tristate">
+                    <bool>true</bool>
                    </property>
                   </widget>
                  </item>
