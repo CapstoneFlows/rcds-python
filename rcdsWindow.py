@@ -588,4 +588,4 @@ class Ui_MainWindow(object):
         self.actionSet_Up.setText(_translate("MainWindow", "Set Up", None))
 
 from pyqtgraph import PlotWidget
-import rcds-res_rc
+import rcds_res_rc

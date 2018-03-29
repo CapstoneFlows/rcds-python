@@ -1135,7 +1135,7 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="res/rcds-res.qrc"/>
+  <include location="res/rcds_res.qrc"/>
  </resources>
  <connections/>
 </ui>
