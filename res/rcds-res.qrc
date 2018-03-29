@@ -1,21 +1,13 @@
 <RCC>
   <qresource prefix="intersection">
     <file>arrowLeft.jpg</file>
-    <file>arrowLeft.png</file>
     <file>arrowNone.jpg</file>
-    <file>arrowNone.png</file>
     <file>arrowRight.jpg</file>
-    <file>arrowRight.png</file>
     <file>arrowStraight.jpg</file>
-    <file>arrowStraight.png</file>
-    <file>arrowUnknown0.jpg</file>
-    <file>arrowUnknown0.png</file>
-    <file>arrowUnknown90.jpg</file>
-    <file>arrowUnknown90.png</file>
-    <file>arrowUnknown180.jpg</file>
-    <file>arrowUnknown180.png</file>
-    <file>arrowUnknown270.jpg</file>
-    <file>arrowUnknown270.png</file>
     <file>intersection.png</file>
+    <file>arrowUnknown270.jpg</file>
+    <file>arrowUnknown0.jpg</file>
+    <file>arrowUnknown90.jpg</file>
+    <file>arrowUnknown180.jpg</file>
   </qresource>
 </RCC>
