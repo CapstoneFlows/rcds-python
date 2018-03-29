@@ -566,7 +566,7 @@ class Ui_MainWindow(object):
         self.wButton.setText(_translate("MainWindow", "W", None))
         self.eButton.setText(_translate("MainWindow", "E", None))
         self.sButton.setText(_translate("MainWindow", "S", None))
-        self.MapSaveButton.setText(_translate("MainWindow", "Save Order/Data", None))
+        self.MapSaveButton.setText(_translate("MainWindow", "Save Order Data", None))
         self.straight_label.setText(_translate("MainWindow", "Straight:", None))
         self.straight_num_label.setText(_translate("MainWindow", "0", None))
         self.right_label.setText(_translate("MainWindow", "Right:", None))
