@@ -667,6 +667,9 @@
                 </item>
                 <item>
                  <widget class="QPushButton" name="PlayPauseButton">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
                   <property name="text">
                    <string>Play</string>
                   </property>
@@ -836,6 +839,9 @@
              <layout class="QVBoxLayout" name="verticalLayout_10">
               <item>
                <widget class="QPushButton" name="MapSaveButton">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
                 <property name="text">
                  <string>Save Order Data</string>
                 </property>
@@ -1146,7 +1152,11 @@
                </widget>
               </item>
               <item>
-               <widget class="QComboBox" name="PlaybackComboBox"/>
+               <widget class="QComboBox" name="PlaybackComboBox">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
+               </widget>
               </item>
              </layout>
             </item>
