@@ -644,7 +644,10 @@
               <item row="4" column="2">
                <layout class="QHBoxLayout" name="horizontalLayout_7">
                 <item>
-                 <widget class="QSlider" name="playSlider">
+                 <widget class="QSlider" name="PlaySlider">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
                   <property name="maximum">
                    <number>500</number>
                   </property>
