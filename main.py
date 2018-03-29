@@ -4,10 +4,15 @@ import json
 import numpy as np
 from PyQt4 import QtCore, QtGui
 
-from rcdsWindow import Ui_MainWindow, _translate    
+from rcdsWindow import Ui_MainWindow, _translate
+import rcds_res_rc
+
 import sensorControl as sc
 import dataFiltering as df
 import dataVisualization as dv
+import trafficDirection as td
+
+###############################################################################
 
 class RCDSTool(QtGui.QMainWindow):
     def __init__(self, parent=None):
@@ -53,13 +58,20 @@ class RCDSTool(QtGui.QMainWindow):
         self.ui.SaveImageButton.clicked.connect(self.SaveGraph)
         self.ui.GraphSlider.sliderMoved.connect(self.ChangeGraphFrame)
 
-        self.ui.nButton.clicked.connect(self.SensorFileSelect)
-        self.ui.eButton.clicked.connect(self.SensorFileSelect)
-        self.ui.sButton.clicked.connect(self.SensorFileSelect)
-        self.ui.wButton.clicked.connect(self.SensorFileSelect)
-        self.ui.PlayPauseButton.clicked.connect(self.PlayPauseMap)
+        self.filenamesIn = {}
+        self.filenamesOut = {}
+        self.orderData = None
+        self.ui.nInButton.clicked.connect(lambda: self.SensorFileSelect('NIn'))
+        self.ui.eInButton.clicked.connect(lambda: self.SensorFileSelect('EIn'))
+        self.ui.sInButton.clicked.connect(lambda: self.SensorFileSelect('SIn'))
+        self.ui.wInButton.clicked.connect(lambda: self.SensorFileSelect('WIn'))
+        self.ui.nOutButton.clicked.connect(lambda: self.SensorFileSelect('NOut'))
+        self.ui.eOutButton.clicked.connect(lambda: self.SensorFileSelect('EOut'))
+        self.ui.sOutButton.clicked.connect(lambda: self.SensorFileSelect('SOut'))
+        self.ui.wOutButton.clicked.connect(lambda: self.SensorFileSelect('WOut'))
+        self.ui.CompileButton.clicked.connect(self.CompileDirections)
         self.ui.MapSaveButton.clicked.connect(self.SaveOrderData)
-        self.ui.PlaySlider.sliderMoved.connect(self.ChangeTimePosition)
+        self.ui.ClearButton.clicked.connect(self.ClearDevices)
 
 ###############################################################################
 
@@ -303,17 +315,68 @@ class RCDSTool(QtGui.QMainWindow):
 ###############################################################################
     # Data Visualization Functions
 
-    def SensorFileSelect(self):
-        pass
+    def SensorFileSelect(self, buttonstr):
+        if buttonstr == 'NIn':
+            self.filenamesIn['NIn'] = str(QtGui.QFileDialog.getOpenFileName(self, "Open File for North In Sensor", self.data_path, selectedFilter='*.csv'))
+        elif buttonstr == 'NOut':
+            self.filenamesOut['NOut'] = str(QtGui.QFileDialog.getOpenFileName(self, "Open File for North Out Sensor", self.data_path, selectedFilter='*.csv'))
+        elif buttonstr == 'EIn':
+            self.filenamesIn['EIn'] = str(QtGui.QFileDialog.getOpenFileName(self, "Open File for East In Sensor", self.data_path, selectedFilter='*.csv'))
+        elif buttonstr == 'EOut':
+            self.filenamesOut['EOut'] = str(QtGui.QFileDialog.getOpenFileName(self, "Open File for East Out Sensor", self.data_path, selectedFilter='*.csv'))
+        elif buttonstr == 'SIn':
+            self.filenamesIn['SIn'] = str(QtGui.QFileDialog.getOpenFileName(self, "Open File for South In Sensor", self.data_path, selectedFilter='*.csv'))
+        elif buttonstr == 'SOut':
+            self.filenamesOut['SOut'] = str(QtGui.QFileDialog.getOpenFileName(self, "Open File for South Out Sensor", self.data_path, selectedFilter='*.csv'))
+        elif buttonstr == 'WIn':
+            self.filenamesIn['WIn'] = str(QtGui.QFileDialog.getOpenFileName(self, "Open File for West In Sensor", self.data_path, selectedFilter='*.csv'))
+        elif buttonstr == 'WOut':
+            self.filenamesOut['WOut'] = str(QtGui.QFileDialog.getOpenFileName(self, "Open File for West Out Sensor", self.data_path, selectedFilter='*.csv'))
+        self.UpdateChecks(buttonstr)
 
-    def PlayPauseMap(self):
-        pass
+    def UpdateChecks(self, buttonstr):
+        if buttonstr == 'NIn' or buttonstr == 'NOut':
+            if self.ui.nCheck.checkState() == QtCore.Qt.PartiallyChecked:
+                self.ui.nCheck.setCheckState(QtCore.Qt.Checked)
+            else:
+                self.ui.nCheck.setCheckState(QtCore.Qt.PartiallyChecked)
+        elif buttonstr == 'EIn' or buttonstr == 'EOut':
+            if self.ui.eCheck.checkState() == QtCore.Qt.PartiallyChecked:
+                self.ui.eCheck.setCheckState(QtCore.Qt.Checked)
+            else:
+                self.ui.eCheck.setCheckState(QtCore.Qt.PartiallyChecked)
+        elif buttonstr == 'SIn' or buttonstr == 'SOut':
+            if self.ui.sCheck.checkState() == QtCore.Qt.PartiallyChecked:
+                self.ui.sCheck.setCheckState(QtCore.Qt.Checked)
+            else:
+                self.ui.sCheck.setCheckState(QtCore.Qt.PartiallyChecked)
+        elif buttonstr == 'WIn' or buttonstr == 'WOut':
+            if self.ui.wCheck.checkState() == QtCore.Qt.PartiallyChecked:
+                self.ui.wCheck.setCheckState(QtCore.Qt.Checked)
+            else:
+                self.ui.wCheck.setCheckState(QtCore.Qt.PartiallyChecked)
+
+        if len(self.filenamesIn.keys()) > 0 and len(self.filenamesOut.keys()) > 0:
+            self.ui.CompileButton.setDisabled(False)
+
+    def CompileDirections(self):
+        self.orderData = td.getTrafficFlow(self.filenamesIn, self.filenamesOut)
+        if self.orderData:
+            self.ui.MapSaveButton.setDisabled(False)
 
     def SaveOrderData(self):
-        pass
+        name = str(QtGui.QFileDialog.getSaveFileName(self, "Save Order Data File", self.data_path, selectedFilter='*.csv'))
+        np.savetxt(name, self.orderData, fmt='%i', delimiter=",")
 
-    def ChangeTimePosition(self):
-        pass
+    def ClearDevices(self):
+        self.filenamesIn = {}
+        self.filenamesOut = {}
+        self.ui.nCheck.setCheckState(QtCore.Qt.Unchecked)
+        self.ui.eCheck.setCheckState(QtCore.Qt.Unchecked)
+        self.ui.sCheck.setCheckState(QtCore.Qt.Unchecked)
+        self.ui.wCheck.setCheckState(QtCore.Qt.Unchecked)
+        self.ui.CompileButton.setDisabled(True)
+        self.ui.MapSaveButton.setDisabled(True)
 
 ###############################################################################
 
