@@ -1091,6 +1091,16 @@
                 </layout>
                </widget>
               </item>
+              <item>
+               <widget class="QLabel" name="playback_label">
+                <property name="text">
+                 <string>Playback Speed</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QComboBox" name="PlaybackComboBox"/>
+              </item>
              </layout>
             </item>
            </layout>
