@@ -10,6 +10,11 @@ def getTrafficFlow(filterData,directions):
 	errorHeight = 0.1
 	errorLength = 0.1
 	found = False
+	identified = []
+	directionsTime = {"EWEW":[],"EWSN":[],"EWNS":[],"EWWE":[],
+						"WEWE":[],"WENS":[],"WESN":[],"WEEW":[],
+						"NSNW":[],"NSEW":[], "NSWE":[],"NSSN":[],
+						"SNSN":[],"SNWE":[],"SNEW":[],"SNNS":[],"UNIDENTIFIED":[]}
 	directionsCount = {"EWEW":0,"EWSN":0,"EWNS":0,"EWWE":0,
 						"WEWE":0,"WENS":0,"WESN":0,"WEEW":0,
 						"NSNW":0,"NSEW":0, "NSWE":0,"NSSN":0,
@@ -37,21 +42,24 @@ def getTrafficFlow(filterData,directions):
 			# For every vehicle before it
 			for j in range(i):		
 
-				if  ((found == False) and  # If not found yet
+				if  ((j not in identified)
+					(found == False) and  # If not found yet
 					(filterData[j][1] > (filterData[i][1] - maxTime)) and # if the vehicle is not too early
 					(filterData[j][1] < filterData[i][1] - minTime) and # if the vehicle is not late
 					(filterData[j][2] == 1) and # if the vehicle is inbound
 					(filterData[j][5] * (1 - errorHeight) < filterData[i][5] < filterData[j][5] *(1 + errorHeight)) and # If the vehicle's height is smillar within error
 					(getLength(filterData[j][3],filterData[j][4]) * (1 - errorLength) < getLength(filterData[i][3],filterData[i][4]) < getLength(filterData[j][3],filterData[j][4]) *(1 + errorLength))): # If the vehicle's length is smillar within error
 						# Inbound direction join outbound direction  += 1
+						directionsTime[filterData[j][6] + filterData[i][6]].append(filterData[j][1])
 						directionsCount[filterData[j][6] + filterData[i][6]] += 1
 						found = True # found is true
+						identified.append(j)
 
 			# If not found at the end, unidentified vehicle +=1
 			if (found == False):
 				directionsCount["UNIDENTIFIED"] += 1
 
-	return directionsCount
+	return directionsCount, directionsTime
 
 
 def getLength(timeOccluded, deltaTime):
@@ -79,8 +87,11 @@ directions={"EW":[1],"WE":[4],"NS":[3],"SN":[2]}
 
 filterData = np.empty((0,6), int)
 filterData = [car9, car1,car3, car2, car4, car7, car5, car6, car8, car11,car12,car10]
-directionsCount = getTrafficFlow(filterData, directions)
+directionsCount, directionsTime = getTrafficFlow(filterData, directions)
 
 
 for key,value in directionsCount.items():
+	print key + " " + str(value)
+
+for key,value in directionsTime.items():
 	print key + " " + str(value)
