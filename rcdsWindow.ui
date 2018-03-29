@@ -1092,6 +1092,13 @@
                </widget>
               </item>
               <item>
+               <widget class="QPushButton" name="ClearButton">
+                <property name="text">
+                 <string>Clear Devices</string>
+                </property>
+               </widget>
+              </item>
+              <item>
                <widget class="QLabel" name="playback_label">
                 <property name="text">
                  <string>Playback Speed</string>
