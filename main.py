@@ -51,6 +51,15 @@ class RCDSTool(QtGui.QMainWindow):
         self.ui.SelectFolderButton.clicked.connect(self.SelectVisualizationFolder)
         self.ui.DataShowButton.clicked.connect(self.GraphData)
         self.ui.SaveImageButton.clicked.connect(self.SaveGraph)
+        self.ui.GraphSlider.sliderMoved.connect(self.ChangeGraphFrame)
+
+        self.ui.nButton.clicked.connect(self.SensorFileSelect)
+        self.ui.eButton.clicked.connect(self.SensorFileSelect)
+        self.ui.sButton.clicked.connect(self.SensorFileSelect)
+        self.ui.wButton.clicked.connect(self.SensorFileSelect)
+        self.ui.PlayPauseButton.clicked.connect(self.PlayPauseMap)
+        self.ui.MapSaveButton.clicked.connect(self.SaveOrderData)
+        self.ui.PlaySlider.sliderMoved.connect(self.ChangeTimePosition)
 
 ###############################################################################
 
@@ -287,6 +296,24 @@ class RCDSTool(QtGui.QMainWindow):
     def SaveGraph(self):
         name = str(QtGui.QFileDialog.getSaveFileName(self, "Save Graph as Image", self.data_path, selectedFilter='*.png'))
         dv.SaveGraph(name, self.ui.DataGraphicsView)
+
+    def ChangeGraphFrame(self):
+        pass
+
+###############################################################################
+    # Data Visualization Functions
+
+    def SensorFileSelect(self):
+        pass
+
+    def PlayPauseMap(self):
+        pass
+
+    def SaveOrderData(self):
+        pass
+
+    def ChangeTimePosition(self):
+        pass
 
 ###############################################################################
 
