@@ -58,17 +58,18 @@ class RCDSTool(QtGui.QMainWindow):
         self.ui.SaveImageButton.clicked.connect(self.SaveGraph)
         self.ui.GraphSlider.sliderMoved.connect(self.ChangeGraphFrame)
 
-        self.filenamesIn = {}
-        self.filenamesOut = {}
+        self.map_path = os.getcwd()
+        self.idsIn = {}
+        self.idsOut = {}
         self.orderData = None
-        self.ui.nInButton.clicked.connect(lambda: self.SensorFileSelect('NIn'))
-        self.ui.eInButton.clicked.connect(lambda: self.SensorFileSelect('EIn'))
-        self.ui.sInButton.clicked.connect(lambda: self.SensorFileSelect('SIn'))
-        self.ui.wInButton.clicked.connect(lambda: self.SensorFileSelect('WIn'))
-        self.ui.nOutButton.clicked.connect(lambda: self.SensorFileSelect('NOut'))
-        self.ui.eOutButton.clicked.connect(lambda: self.SensorFileSelect('EOut'))
-        self.ui.sOutButton.clicked.connect(lambda: self.SensorFileSelect('SOut'))
-        self.ui.wOutButton.clicked.connect(lambda: self.SensorFileSelect('WOut'))
+        self.ui.nInComboBox.currentIndexChanged.connect(lambda: self.SensorSelect('NIn'))
+        self.ui.eInComboBox.currentIndexChanged.connect(lambda: self.SensorSelect('EIn'))
+        self.ui.sInComboBox.currentIndexChanged.connect(lambda: self.SensorSelect('SIn'))
+        self.ui.wInComboBox.currentIndexChanged.connect(lambda: self.SensorSelect('WIn'))
+        self.ui.nOutComboBox.currentIndexChanged.connect(lambda: self.SensorSelect('NOut'))
+        self.ui.eOutComboBox.currentIndexChanged.connect(lambda: self.SensorSelect('EOut'))
+        self.ui.sOutComboBox.currentIndexChanged.connect(lambda: self.SensorSelect('SOut'))
+        self.ui.wOutComboBox.currentIndexChanged.connect(lambda: self.SensorSelect('WOut'))
         self.ui.CompileButton.clicked.connect(self.CompileDirections)
         self.ui.MapSaveButton.clicked.connect(self.SaveOrderData)
         self.ui.ClearButton.clicked.connect(self.ClearDevices)
@@ -317,21 +318,21 @@ class RCDSTool(QtGui.QMainWindow):
 
     def SensorFileSelect(self, buttonstr):
         if buttonstr == 'NIn':
-            self.filenamesIn['NIn'] = str(QtGui.QFileDialog.getOpenFileName(self, "Open File for North In Sensor", self.data_path, selectedFilter='*.csv'))
+            self.idsIn['NIn'] = str(QtGui.QFileDialog.getOpenFileName(self, "Open File for North In Sensor", self.data_path, selectedFilter='*.csv'))
         elif buttonstr == 'NOut':
-            self.filenamesOut['NOut'] = str(QtGui.QFileDialog.getOpenFileName(self, "Open File for North Out Sensor", self.data_path, selectedFilter='*.csv'))
+            self.idsOut['NOut'] = str(QtGui.QFileDialog.getOpenFileName(self, "Open File for North Out Sensor", self.data_path, selectedFilter='*.csv'))
         elif buttonstr == 'EIn':
-            self.filenamesIn['EIn'] = str(QtGui.QFileDialog.getOpenFileName(self, "Open File for East In Sensor", self.data_path, selectedFilter='*.csv'))
+            self.idsIn['EIn'] = str(QtGui.QFileDialog.getOpenFileName(self, "Open File for East In Sensor", self.data_path, selectedFilter='*.csv'))
         elif buttonstr == 'EOut':
-            self.filenamesOut['EOut'] = str(QtGui.QFileDialog.getOpenFileName(self, "Open File for East Out Sensor", self.data_path, selectedFilter='*.csv'))
+            self.idsOut['EOut'] = str(QtGui.QFileDialog.getOpenFileName(self, "Open File for East Out Sensor", self.data_path, selectedFilter='*.csv'))
         elif buttonstr == 'SIn':
-            self.filenamesIn['SIn'] = str(QtGui.QFileDialog.getOpenFileName(self, "Open File for South In Sensor", self.data_path, selectedFilter='*.csv'))
+            self.idsIn['SIn'] = str(QtGui.QFileDialog.getOpenFileName(self, "Open File for South In Sensor", self.data_path, selectedFilter='*.csv'))
         elif buttonstr == 'SOut':
-            self.filenamesOut['SOut'] = str(QtGui.QFileDialog.getOpenFileName(self, "Open File for South Out Sensor", self.data_path, selectedFilter='*.csv'))
+            self.idsOut['SOut'] = str(QtGui.QFileDialog.getOpenFileName(self, "Open File for South Out Sensor", self.data_path, selectedFilter='*.csv'))
         elif buttonstr == 'WIn':
-            self.filenamesIn['WIn'] = str(QtGui.QFileDialog.getOpenFileName(self, "Open File for West In Sensor", self.data_path, selectedFilter='*.csv'))
+            self.idsIn['WIn'] = str(QtGui.QFileDialog.getOpenFileName(self, "Open File for West In Sensor", self.data_path, selectedFilter='*.csv'))
         elif buttonstr == 'WOut':
-            self.filenamesOut['WOut'] = str(QtGui.QFileDialog.getOpenFileName(self, "Open File for West Out Sensor", self.data_path, selectedFilter='*.csv'))
+            self.idsOut['WOut'] = str(QtGui.QFileDialog.getOpenFileName(self, "Open File for West Out Sensor", self.data_path, selectedFilter='*.csv'))
         self.UpdateChecks(buttonstr)
 
     def UpdateChecks(self, buttonstr):
@@ -356,11 +357,11 @@ class RCDSTool(QtGui.QMainWindow):
             else:
                 self.ui.wCheck.setCheckState(QtCore.Qt.PartiallyChecked)
 
-        if len(self.filenamesIn.keys()) > 0 and len(self.filenamesOut.keys()) > 0:
+        if len(self.idsIn.keys()) > 0 and len(self.idsOut.keys()) > 0:
             self.ui.CompileButton.setDisabled(False)
 
     def CompileDirections(self):
-        self.orderData = td.getTrafficFlow(self.filenamesIn, self.filenamesOut)
+        self.orderData = td.getTrafficFlow(self.idsIn, self.idsOut)
         if self.orderData:
             self.ui.MapSaveButton.setDisabled(False)
 
@@ -369,8 +370,8 @@ class RCDSTool(QtGui.QMainWindow):
         np.savetxt(name, self.orderData, fmt='%i', delimiter=",")
 
     def ClearDevices(self):
-        self.filenamesIn = {}
-        self.filenamesOut = {}
+        self.idsIn = {}
+        self.idsOut = {}
         self.ui.nCheck.setCheckState(QtCore.Qt.Unchecked)
         self.ui.eCheck.setCheckState(QtCore.Qt.Unchecked)
         self.ui.sCheck.setCheckState(QtCore.Qt.Unchecked)
