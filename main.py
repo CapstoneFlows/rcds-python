@@ -56,7 +56,6 @@ class RCDSTool(QtGui.QMainWindow):
         self.ui.SelectFolderButton.clicked.connect(self.SelectVisualizationFolder)
         self.ui.DataShowButton.clicked.connect(self.GraphData)
         self.ui.SaveImageButton.clicked.connect(self.SaveGraph)
-        self.ui.GraphSlider.sliderMoved.connect(self.ChangeGraphFrame)
 
         self.map_path = os.getcwd()
         self.idsIn = {}
@@ -303,15 +302,16 @@ class RCDSTool(QtGui.QMainWindow):
     def GraphData(self):
         self.ui.DataGraphicsView.getPlotItem().clear()
         graph_func = str(self.ui.DataComboBox.currentText())
+        if graph_func == "Speed Distribution":
+            self.ui.GraphSlider.setDisabled(False)
+        else:
+            self.ui.GraphSlider.setDisabled(True)
         selectedFiles = [os.path.join(self.data_path, str(x.text())) for x in self.ui.GraphFileListWidget.selectedItems()]
-        dv.graph_handles[graph_func](selectedFiles, self.ui.DataGraphicsView)
+        dv.graph_handles[graph_func](selectedFiles, self.ui.DataGraphicsView, self.ui.GraphSlider.value())
 
     def SaveGraph(self):
         name = str(QtGui.QFileDialog.getSaveFileName(self, "Save Graph as Image", self.data_path, selectedFilter='*.png'))
         dv.SaveGraph(name, self.ui.DataGraphicsView)
-
-    def ChangeGraphFrame(self):
-        pass
 
 ###############################################################################
     # Data Visualization Functions

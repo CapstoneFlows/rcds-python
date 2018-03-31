@@ -4,13 +4,13 @@ import pyqtgraph as pg
 import datetime
 
 
-def saveGraph(fileName, pyqtwidget):
-    pass
-
+def SaveGraph(fileName, pyqtwidget):
+    exporter = pg.exporters.ImageExporter(pyqtwidget.plotItem)
+    exporter.export(fileName)
 
 def plotGraph(func):
-    def graph_decorator(files, plotwidget):
-        x, y, xaxis, xunits, yaxis, yunits, title, pen = func(files, plotwidget)
+    def graph_decorator(files, plotwidget, hour):
+        x, y, xaxis, xunits, yaxis, yunits, title, pen = func(files, plotwidget, hour)
         symbol = None
         ticks = None
         if isinstance(x, dict):
@@ -29,7 +29,7 @@ def plotGraph(func):
     return(graph_decorator)
 
 @plotGraph
-def carsPerHour(files, plotwidget):
+def carsPerHour(files, plotwidget, hour):
     graphDict = {}
     for file in files:
         with open(file, 'rU') as f:
@@ -51,7 +51,7 @@ def carsPerHour(files, plotwidget):
     return x, y, "Time", "Hours", "Flow", "# of Cars", "Cars Per Hour", (1,1)
 
 @plotGraph
-def carsPerSpeed(files, plotwidget):
+def carsPerSpeed(files, plotwidget, hour):
     graphDict = {}
     for file in files:
         with open(file, 'rU') as f:
@@ -72,7 +72,7 @@ def carsPerSpeed(files, plotwidget):
     return x, y, "Speed", "kmh", "Flow", "# of Cars", "Cars Per Speed", None
 
 @plotGraph
-def heightPerLength(files, plotwidget):
+def heightPerLength(files, plotwidget, hour):
     x = []
     y = []
     for file in files:
@@ -86,7 +86,7 @@ def heightPerLength(files, plotwidget):
     return x, y, "Length of Cars", "cm", "Ground Clearance", "cm", "Ground Clearance per Car Length", None
 
 @plotGraph
-def speedPerLength(files, plotwidget):
+def speedPerLength(files, plotwidget, hour):
     x = []
     y = []
     for file in files:
@@ -100,7 +100,7 @@ def speedPerLength(files, plotwidget):
     return x, y, "Length of Cars", "cm", "Speed", "kmh", "Car Speed per Car Length", None
 
 @plotGraph
-def speedPerHour(files, plotwidget):
+def speedPerHour(files, plotwidget, hour):
     graphDict = {}
     for file in files:
         with open(file, 'rU') as f:
@@ -123,6 +123,29 @@ def speedPerHour(files, plotwidget):
     x = dict(enumerate(x))
     return x, y, "Time", "Hours", "Speed", "kmh", "Speed of Cars Per Hour", (1,1)
 
+@plotGraph
+def speedDistribution(files, plotwidget, hour):
+    graphDict = {}
+    for file in files:
+        with open(file, 'rU') as f:
+            csvreader = csv.reader(f, quoting=csv.QUOTE_ALL, delimiter=',')
+            for row in csvreader:
+                speed = 0.0001 / float(row[4]) * 1000.0 * 3600.0
+                t = datetime.datetime.fromtimestamp((int(row[1]) / 3600) * 3600).hour
+                if t == hour:
+                    if speed in graphDict:
+                        graphDict[t] += 1
+                    else:
+                        graphDict[t] = 1
+    x = []
+    y = []
+    keylist = graphDict.keys()
+    keylist.sort()
+    for key in keylist:
+        x.append(int(key))
+        y.append(int(graphDict[key]))
+    return x, y, "Speed", "kmh", "Flow", "# of Cars", "Speed distribution at "+str(hour)+" o'clock", None
+
 
 graph_handles = {
     "Cars/Hour" : carsPerHour,
@@ -130,4 +153,5 @@ graph_handles = {
     "Height/Length" : heightPerLength,
     "Speed/Length" : speedPerLength,
     "Avg Speed/Hour" : speedPerHour,
+    "Speed Distribution" : speedDistribution,
 }
