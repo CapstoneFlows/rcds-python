@@ -49,6 +49,7 @@ class RCDSTool(QtGui.QMainWindow):
         self.ui.FilterSelectFolderButton.clicked.connect(self.SelectFilterFolder)
         self.ui.ShowDataButton.clicked.connect(self.ShowFilteredData)
         self.ui.SavetoFileButton.clicked.connect(self.SaveFilteredData)
+        self.ui.SaveFormattedButton.clicked.connect(self.SavePrettyData)
 
         self.data_path = os.getcwd()
         for key in dv.graph_handles.keys():
@@ -243,12 +244,15 @@ class RCDSTool(QtGui.QMainWindow):
                 self.ui.FilterFileListWidget.addItems(files)
                 self.ui.ShowDataButton.setDisabled(False)
                 self.ui.SavetoFileButton.setDisabled(False)
+                self.ui.SaveFormattedButton.setDisabled(False)
             else:
                 self.ui.ShowDataButton.setDisabled(True)
                 self.ui.SavetoFileButton.setDisabled(True)
+                self.ui.SaveFormattedButton.setDisabled(True)
         else:
             self.ui.ShowDataButton.setDisabled(True)
             self.ui.SavetoFileButton.setDisabled(True)
+            self.ui.SaveFormattedButton.setDisabled(True)
 
     def GetFilters(self):
         filters = {}
@@ -280,6 +284,10 @@ class RCDSTool(QtGui.QMainWindow):
     def SaveFilteredData(self):
         name = str(QtGui.QFileDialog.getSaveFileName(self, "Save Filtered Data File", self.filter_path, selectedFilter='*.csv'))
         df.SaveData(name, str(self.ui.DataPlainTextEdit.toPlainText()))
+
+    def SavePrettyData(self):
+        name = str(QtGui.QFileDialog.getSaveFileName(self, "Save Formatted Data File", self.filter_path, selectedFilter='*.csv'))
+        df.SavePrettyData(name, str(self.ui.DataPlainTextEdit.toPlainText()))
 
 ###############################################################################
     # Data Visualization Functions

@@ -1,6 +1,7 @@
 import csv
 import os
 import json
+import datetime
 import numpy as np
 
 def ProcessData(path, files, filters):
@@ -30,4 +31,26 @@ def ProcessData(path, files, filters):
 
 def SaveData(path, data):
     data = np.array(json.loads(data.replace ('],\n', '],')))
-    np.savetxt(path, data, fmt='%i', delimiter=",")
+    np.savetxt(path, data, fmt='%s', delimiter=",")
+
+
+def SavePrettyData(path, data):
+    data = np.array(json.loads(data.replace ('],\n', '],')))
+    with open(path, 'wb') as f:
+        writer = csv.writer(f, delimiter=',', quoting=csv.QUOTE_ALL)
+        writer.writerow(['ID', 'Start Time', 'Time Occluded', 'Length', 'Speed', 'Ground Clearance'])
+        writer.writerow(['', '', 'ms', 'cm', 'kmh', 'cm'])
+
+        def MakeRow( x ):
+            row = []
+            speed = 0.0001 / float(x[4]) * 1000.0 * 3600.0
+            length = float(speed) * float(x[3]) / 100.0
+            row.append(x[0])
+            row.append(datetime.datetime.fromtimestamp(int(x[1])).strftime('%Y-%m-%d %H:%M:%S'))
+            row.append(x[3])
+            row.append(length)
+            row.append(speed)
+            row.append(x[5])
+            writer.writerow(row)
+
+        np.apply_along_axis( MakeRow, axis=1, arr=data )

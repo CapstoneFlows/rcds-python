@@ -146,6 +146,30 @@ def speedDistribution(files, plotwidget, hour):
         y.append(int(graphDict[key]))
     return x, y, "Speed", "kmh", "Flow", "# of Cars", "Speed distribution at "+str(hour)+" o'clock", None
 
+@plotGraph
+def longPerHour(files, plotwidget, hour):
+    graphDict = {}
+    for file in files:
+        with open(file, 'rU') as f:
+            csvreader = csv.reader(f, quoting=csv.QUOTE_ALL, delimiter=',')
+            for row in csvreader:
+                length = float(speed) * float(row[3]) / 100.0
+                if length > 700:
+                    t = (int(row[1]) / 3600) * 3600
+                    if t in graphDict:
+                        graphDict[t] += 1
+                    else:
+                        graphDict[t] = 1
+    x = []
+    y = []
+    keylist = graphDict.keys()
+    keylist.sort()
+    for key in keylist:
+        x.append(datetime.datetime.fromtimestamp(int(key)).strftime('%Y-%m-%d %H:%M:%S'))
+        y.append(int(graphDict[key]))
+    x = dict(enumerate(x))
+    return x, y, "Time", "Hours", "Long Flow", "# of Long Vehicles", "Vehicles Longer than 7m Per Hour", (1,1)
+
 
 graph_handles = {
     "Cars/Hour" : carsPerHour,
@@ -154,4 +178,5 @@ graph_handles = {
     "Speed/Length" : speedPerLength,
     "Avg Speed/Hour" : speedPerHour,
     "Speed Distribution" : speedDistribution,
+    "Long Cars/Hour" : longPerHour,
 }
