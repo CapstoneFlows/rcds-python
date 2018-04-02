@@ -493,6 +493,16 @@
                   </property>
                  </widget>
                 </item>
+                <item>
+                 <widget class="QPushButton" name="SaveFormattedButton">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
+                  <property name="text">
+                   <string>Save Formatted</string>
+                  </property>
+                 </widget>
+                </item>
                </layout>
               </item>
               <item>
