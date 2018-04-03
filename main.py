@@ -357,7 +357,8 @@ class RCDSTool(QtGui.QMainWindow):
 
     def SetDeviceLists(self):
         self.map_files = [str(x.text()) for x in self.ui.MapListWidget.selectedItems()]
-        self.ids = td.GetIDs(self.map_path, self.map_files)
+        self.ids = ["No Sensor"]
+        self.ids.extend(td.GetIDs(self.map_path, self.map_files))
         for did in self.ids:
             self.ui.nInComboBox.addItem(did)
             self.ui.eInComboBox.addItem(did)
@@ -367,13 +368,15 @@ class RCDSTool(QtGui.QMainWindow):
             self.ui.eOutComboBox.addItem(did)
             self.ui.sOutComboBox.addItem(did)
             self.ui.wOutComboBox.addItem(did)
+        self.ClearDevices()
 
     def SensorSelect(self, buttonstr, did):
-        if "In" in buttonstr:
-            self.idsIn[buttonstr] = did
-        elif "Out" in buttonstr:
-            self.idsOut[buttonstr] = did
-        self.UpdateChecks(buttonstr)
+        if buttonstr != "No Sensor":
+            if "In" in buttonstr:
+                self.idsIn[buttonstr] = did
+            elif "Out" in buttonstr:
+                self.idsOut[buttonstr] = did
+            self.UpdateChecks(buttonstr)
 
     def UpdateChecks(self, buttonstr):
         if buttonstr == 'NIn' or buttonstr == 'NOut':
@@ -404,6 +407,19 @@ class RCDSTool(QtGui.QMainWindow):
         self.orderData = td.getTrafficFlow(self.map_path, self.map_files, self.idsIn, self.idsOut)
         if self.orderData:
             self.ui.MapSaveButton.setDisabled(False)
+            self.ui.EWnumlabel.setText(str(self.orderData["EW"][0]))
+            self.ui.ENnumlabel.setText(str(self.orderData["EN"][0]))
+            self.ui.ESnumlabel.setText(str(self.orderData["ES"][0]))
+            self.ui.WEnumlabel.setText(str(self.orderData["WE"][0]))
+            self.ui.WSnumlabel.setText(str(self.orderData["WS"][0]))
+            self.ui.WNnumlabel.setText(str(self.orderData["WN"][0]))
+            self.ui.NSnumlabel.setText(str(self.orderData["NS"][0]))
+            self.ui.NWnumlabel.setText(str(self.orderData["NW"][0]))
+            self.ui.NEnumlabel.setText(str(self.orderData["NE"][0]))
+            self.ui.SNnumlabel.setText(str(self.orderData["SN"][0]))
+            self.ui.SEnumlabel.setText(str(self.orderData["SE"][0]))
+            self.ui.SWnumlabel.setText(str(self.orderData["SW"][0]))
+
 
     def SaveOrderData(self):
         name = str(QtGui.QFileDialog.getSaveFileName(self, "Save Order Data File", self.data_path, selectedFilter='*.csv'))

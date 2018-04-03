@@ -29,13 +29,19 @@ def getTrafficFlow(path, files, inIds, outIds):
                   "WN":[0,[]],"WE":[0,[]],"WS":[0,[]], "UNIDENTIFIED":[0,[]]}
 
     files.sort()
-    filterData = None
+    filterData = []
     for file in files:
-        if filterData == None:
-            filterData = np.genfromtxt(os.path.join(path,file), delimiter=',')
-        else:
-            temp = np.genfromtxt(os.path.join(path,file), delimiter=',')
-            filterData = np.append(filterData, temp, axis=0)
+        with open(os.path.join(path, file), 'rU') as f:
+            csvreader = csv.reader(f, quoting=csv.QUOTE_ALL, delimiter=',')
+            for row in csvreader:
+                row[0] = str(row[0])
+                row[1] = int(row[1])
+                row[2] = int(row[2])
+                row[3] = int(row[3])
+                row[4] = int(row[4])
+                row[5] = int(row[5])
+                filterData.append(row)
+
 
     # Iterate through every data with i
     for i in range(len(filterData)):
@@ -43,41 +49,56 @@ def getTrafficFlow(path, files, inIds, outIds):
 
         # If id of filterData matches any in list of directions
         # Assign the directions to the last field
-        if any((did == filterData[i][0]) for did in inIds["EIn"]):
-            filterData[i].append("EIn")
-        elif any((did == filterData[i][0]) for did in inIds["WIn"]):
-            filterData[i].append("WIn")
-        elif any((did == filterData[i][0]) for did in inIds["NIn"]):
-            filterData[i].append("NIn")
-        elif any((did == filterData[i][0]) for did in inIds["SIn"]):
-            filterData[i].append("SIn")
-        elif any((did == filterData[i][0]) for did in outIds["EOut"]):
-            filterData[i].append("EOut")
-        elif any((did == filterData[i][0]) for did in outIds["WOut"]):
-            filterData[i].append("WOut")
-        elif any((did == filterData[i][0]) for did in outIds["NOut"]):
-            filterData[i].append("NOut")
-        elif any((did == filterData[i][0]) for did in outIds["SOut"]):
-            filterData[i].append("SOut")
-
+        print filterData[i][0]
+        print (inIds)
+        print (outIds)
+        if "EIn" in inIds:
+            if filterData[i][0] in inIds["EIn"]:
+                filterData[i].append("EIn")
+                print("EIn")
+        if "WIn" in inIds:
+            if filterData[i][0] in inIds["WIn"]:
+                filterData[i].append("WIn")
+                print("WIn")
+        if "NIn" in inIds:
+            if filterData[i][0] in inIds["NIn"]:
+                filterData[i].append("NIn")
+        if "SIn" in inIds:
+            if filterData[i][0] in inIds["SIn"]:
+                filterData[i].append("SIn")
+        if "EOut" in outIds:
+             if filterData[i][0] in outIds["EOut"]:
+                 filterData[i].append("EOut")
+        if "WOut" in outIds:
+            if filterData[i][0] in outIds["WOut"]:
+                filterData[i].append("WOut")
+                print("WOut")
+        if "NOut" in outIds:
+            if filterData[i][0] in outIds["NOut"]:
+                filterData[i].append("NOut")
+        if "SOut" in outIds:
+            if filterData[i][0] in outIds["SOut"]:
+                filterData[i].append("SOut")
+        
+        print filterData[i][6]
         # If the vehicle is outbound
         if 'Out' in filterData[i][6]:
 
             # For every vehicle before it
             for j in range(i):
                 if  (j not in identified) and ('In' in filterData[j][6]): # if the vehicle is inbound
-                	if (found == False) and \
-	                    (filterData[j][1] > (filterData[i][1] - maxTime)) and \
-	                    (filterData[j][1] < filterData[i][1] - minTime) and \
-	                    (filterData[j][5] * (1 - errorHeight) < filterData[i][5] < filterData[j][5] *(1 + errorHeight)) and \
-	                    (getLength(filterData[j][3],filterData[j][4]) * (1 - errorLength) < getLength(filterData[i][3],filterData[i][4]) < getLength(filterData[j][3],filterData[j][4]) *(1 + errorLength)): # If the vehicle's length is smillar within error
-	                        # Inbound direction join outbound direction  += 1
-	                        dirStr = filterData[i][6].split('In')[0] + filterData[j][6].split('Out')[0]
-	                        directions[dirStr][0] += 1
-	                        directions[dirStr][1].append(filterData[i][1])
-	                        found = True # found is true
-	                        identified.append(j)
-	                        break
+                    if (found == False) and \
+                        (filterData[j][1] > (filterData[i][1] - maxTime)) and \
+                        (filterData[j][1] < filterData[i][1] - minTime) and \
+                        (filterData[j][5] * (1 - errorHeight) < filterData[i][5] < filterData[j][5] *(1 + errorHeight)) and \
+                        (getLength(filterData[j][3],filterData[j][4]) * (1 - errorLength) < getLength(filterData[i][3],filterData[i][4]) < getLength(filterData[j][3],filterData[j][4]) *(1 + errorLength)): # If the vehicle's length is smillar within error
+                            # Inbound direction join outbound direction  += 1
+                            dirStr = filterData[j][6].split('In')[0] + filterData[i][6].split('Out')[0]
+                            directions[dirStr][0] += 1
+                            directions[dirStr][1].append(filterData[i][1])
+                            found = True # found is true
+                            identified.append(j)
+                            break
 
             # If not found at the end, unidentified vehicle +=1
             if (found == False):
