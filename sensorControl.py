@@ -184,7 +184,7 @@ def ParseResp(resp):
     params["ID"] = resp.split(" ID=")[1].split(" LOC=")[0]
     params["LOC"] = resp.split(" LOC=")[1].split(" DIR=")[0]
     params["DIR"] = resp.split(" DIR=")[1].split("COMMENT=")[0]
-    params["COMMENT"] = resp.split("COMMENT=")[1].split('\r')[0]
+    params["COMMENT"] = resp.split("COMMENT=")[1].split('@#')[0]
     return params
 
 
