@@ -1,5 +1,6 @@
 import os
 import csv
+import json
 import numpy as np
 
 def GetIDs(path, mapfiles):
@@ -13,6 +14,10 @@ def GetIDs(path, mapfiles):
     dids = ids.keys()
     dids.sort()
     return dids
+
+def SaveOrderFile(path, name, data):
+    with open(os.path.join(path, name), 'w') as f:
+        json.dump(data, f)
 
 def getTrafficFlow(path, files, inIds, outIds):
 
@@ -49,17 +54,12 @@ def getTrafficFlow(path, files, inIds, outIds):
 
         # If id of filterData matches any in list of directions
         # Assign the directions to the last field
-        print filterData[i][0]
-        print (inIds)
-        print (outIds)
         if "EIn" in inIds:
             if filterData[i][0] in inIds["EIn"]:
                 filterData[i].append("EIn")
-                print("EIn")
         if "WIn" in inIds:
             if filterData[i][0] in inIds["WIn"]:
                 filterData[i].append("WIn")
-                print("WIn")
         if "NIn" in inIds:
             if filterData[i][0] in inIds["NIn"]:
                 filterData[i].append("NIn")
@@ -72,7 +72,6 @@ def getTrafficFlow(path, files, inIds, outIds):
         if "WOut" in outIds:
             if filterData[i][0] in outIds["WOut"]:
                 filterData[i].append("WOut")
-                print("WOut")
         if "NOut" in outIds:
             if filterData[i][0] in outIds["NOut"]:
                 filterData[i].append("NOut")
@@ -80,7 +79,6 @@ def getTrafficFlow(path, files, inIds, outIds):
             if filterData[i][0] in outIds["SOut"]:
                 filterData[i].append("SOut")
         
-        print filterData[i][6]
         # If the vehicle is outbound
         if 'Out' in filterData[i][6]:
 
@@ -103,7 +101,7 @@ def getTrafficFlow(path, files, inIds, outIds):
             # If not found at the end, unidentified vehicle +=1
             if (found == False):
                 directions["UNIDENTIFIED"][0] += 1
-                directions[dirStr][1].append(filterData[i][1])
+                directions["UNIDENTIFIED"][1].append(filterData[i][1])
 
     return directions
 

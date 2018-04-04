@@ -419,11 +419,12 @@ class RCDSTool(QtGui.QMainWindow):
             self.ui.SNnumlabel.setText(str(self.orderData["SN"][0]))
             self.ui.SEnumlabel.setText(str(self.orderData["SE"][0]))
             self.ui.SWnumlabel.setText(str(self.orderData["SW"][0]))
+            self.ui.unknownnumlabel.setText(str(self.orderData["UNIDENTIFIED"][0]))
 
 
     def SaveOrderData(self):
-        name = str(QtGui.QFileDialog.getSaveFileName(self, "Save Order Data File", self.data_path, selectedFilter='*.csv'))
-        np.savetxt(name, self.orderData, fmt='%i', delimiter=",")
+        name = str(QtGui.QFileDialog.getSaveFileName(self, "Save Order Data File", self.map_path, selectedFilter='*.csv'))
+        td.SaveOrderFile(self.map_path, name, self.orderData)
 
     def ClearDevices(self):
         self.idsIn = {}
