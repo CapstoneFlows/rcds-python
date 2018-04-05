@@ -3,6 +3,10 @@ import csv
 import json
 import numpy as np
 
+
+def takeTime(data):
+    return data[1]
+
 def GetIDs(path, mapfiles):
     ids = {}
     for file in mapfiles:
@@ -47,37 +51,38 @@ def getTrafficFlow(path, files, inIds, outIds):
                 row[5] = int(row[5])
                 filterData.append(row)
 
+    filterData.sort(key=takeTime)
 
     # Iterate through every data with i
     for i in range(len(filterData)):
         found = False #Initialize found with false
-
+        filterData[i].append("")
         # If id of filterData matches any in list of directions
         # Assign the directions to the last field
         if "EIn" in inIds:
             if filterData[i][0] in inIds["EIn"]:
-                filterData[i].append("EIn")
+                filterData[i][6] = "EIn"
         if "WIn" in inIds:
             if filterData[i][0] in inIds["WIn"]:
-                filterData[i].append("WIn")
+                filterData[i][6] ="WIn"
         if "NIn" in inIds:
             if filterData[i][0] in inIds["NIn"]:
-                filterData[i].append("NIn")
+                filterData[i][6] ="NIn"
         if "SIn" in inIds:
             if filterData[i][0] in inIds["SIn"]:
-                filterData[i].append("SIn")
+                filterData[i][6] ="SIn"
         if "EOut" in outIds:
              if filterData[i][0] in outIds["EOut"]:
-                 filterData[i].append("EOut")
+                 filterData[i][6] ="EOut"
         if "WOut" in outIds:
             if filterData[i][0] in outIds["WOut"]:
-                filterData[i].append("WOut")
+                filterData[i][6] ="WOut"
         if "NOut" in outIds:
             if filterData[i][0] in outIds["NOut"]:
-                filterData[i].append("NOut")
+                filterData[i][6] ="NOut"
         if "SOut" in outIds:
             if filterData[i][0] in outIds["SOut"]:
-                filterData[i].append("SOut")
+                filterData[i][6] ="SOut"
         
         # If the vehicle is outbound
         if 'Out' in filterData[i][6]:
