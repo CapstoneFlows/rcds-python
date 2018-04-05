@@ -241,6 +241,7 @@ class RCDSTool(QtGui.QMainWindow):
             self.ui.MaxSLabel.setText(_translate("MainWindow", "Max Speed (kmh)", None))
 
     def SelectFilterFolder(self):
+        self.ui.FilterFileListWidget.clear()
         self.filter_path = str(QtGui.QFileDialog.getExistingDirectory(self, "Select Filter Directory", self.filter_path))
         if self.filter_path:
             files = [f for f in os.listdir(self.filter_path) if (os.path.isfile(os.path.join(self.filter_path, f)) and '.csv' in f)]
@@ -297,6 +298,7 @@ class RCDSTool(QtGui.QMainWindow):
     # Data Visualization Functions
 
     def SelectVisualizationFolder(self):
+        self.ui.GraphFileListWidget.clear()
         self.data_path = str(QtGui.QFileDialog.getExistingDirectory(self, "Select Data Directory", self.data_path))
         if self.data_path:
             files = [f for f in os.listdir(self.data_path) if (os.path.isfile(os.path.join(self.data_path, f)) and '.csv' in f)]
@@ -329,6 +331,7 @@ class RCDSTool(QtGui.QMainWindow):
     # Map Visualization Functions
 
     def SelectMapFolder(self):
+        self.ui.MapListWidget.clear()
         self.map_path = str(QtGui.QFileDialog.getExistingDirectory(self, "Select Map Data Directory", self.map_path))
         self.ClearLists()
         if self.map_path:
