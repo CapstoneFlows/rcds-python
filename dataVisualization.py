@@ -57,7 +57,7 @@ def carsPerSpeed(files, plotwidget, hour):
         with open(file, 'rU') as f:
             csvreader = csv.reader(f, quoting=csv.QUOTE_ALL, delimiter=',')
             for row in csvreader:
-                s = int(0.0001 / float(row[4]) * 1000.0 * 3600.0)
+                s = int(0.0001 / float(row[4]) * 1000.0 * 1000.0 * 3600.0)
                 if s in graphDict:
                     graphDict[s] += 1
                 else:
@@ -79,7 +79,7 @@ def heightPerLength(files, plotwidget, hour):
         with open(file, 'rU') as f:
             csvreader = csv.reader(f, quoting=csv.QUOTE_ALL, delimiter=',')
             for row in csvreader:
-                speed = 0.0001 / float(row[4]) * 1000.0 * 3600.0
+                speed = 0.0001 / float(row[4]) * 1000.0 * 1000.0 * 3600.0
                 length = float(speed) * float(row[3]) / 100.0
                 x.append(row[5])
                 y.append(length)
@@ -93,7 +93,7 @@ def speedPerLength(files, plotwidget, hour):
         with open(file, 'rU') as f:
             csvreader = csv.reader(f, quoting=csv.QUOTE_ALL, delimiter=',')
             for row in csvreader:
-                speed = 0.0001 / float(row[4]) * 1000.0 * 3600.0
+                speed = 0.0001 / float(row[4]) * 1000.0 * 1000.0 * 3600.0
                 length = float(speed) * float(row[3]) / 100.0
                 x.append(speed)
                 y.append(length)
@@ -106,7 +106,7 @@ def speedPerHour(files, plotwidget, hour):
         with open(file, 'rU') as f:
             csvreader = csv.reader(f, quoting=csv.QUOTE_ALL, delimiter=',')
             for row in csvreader:
-                speed = 0.0001 / float(row[4]) * 1000.0 * 3600.0
+                speed = 0.0001 / float(row[4]) * 1000.0 * 1000.0 * 3600.0
                 t = (int(row[1]) / 3600) * 3600
                 if t in graphDict:
                     graphDict[t][0] += speed
@@ -130,7 +130,7 @@ def speedDistribution(files, plotwidget, hour):
         with open(file, 'rU') as f:
             csvreader = csv.reader(f, quoting=csv.QUOTE_ALL, delimiter=',')
             for row in csvreader:
-                speed = 0.0001 / float(row[4]) * 1000.0 * 3600.0
+                speed = 0.0001 / float(row[4]) * 1000.0 * 1000.0 * 3600.0
                 t = datetime.datetime.fromtimestamp((int(row[1]) / 3600) * 3600).hour
                 if t == hour:
                     if speed in graphDict:
@@ -153,6 +153,7 @@ def longPerHour(files, plotwidget, hour):
         with open(file, 'rU') as f:
             csvreader = csv.reader(f, quoting=csv.QUOTE_ALL, delimiter=',')
             for row in csvreader:
+                speed = 0.0001 / float(row[4]) * 1000.0 * 1000.0 * 3600.0
                 length = float(speed) * float(row[3]) / 100.0
                 if length > 700:
                     t = (int(row[1]) / 3600) * 3600

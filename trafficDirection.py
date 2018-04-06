@@ -112,7 +112,7 @@ def getTrafficFlow(path, files, inIds, outIds):
 
 
 def getLength(timeOccluded, deltaTime):
-    speed = 0.0001 / float(deltaTime) * 1000.0 * 3600.0
+    speed = 0.0001 / float(deltaTime) * 1000.0 * 1000.0 * 3600.0
     return (float(speed) * float(timeOccluded) / 100.0)
     
 

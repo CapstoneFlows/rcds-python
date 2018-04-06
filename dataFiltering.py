@@ -10,7 +10,7 @@ def ProcessData(path, files, filters):
         with open(os.path.join(path,file),'rU') as csvfile:
             csvreader = csv.reader(csvfile, quoting=csv.QUOTE_ALL, delimiter=',')
             for row in csvreader:
-                speed = 0.0001 / float(row[4]) * 1000.0 * 3600.0
+                speed = 0.0001 / float(row[4]) * 1000.0 * 1000.0 * 3600.0
                 length = float(speed) * float(row[3]) / 100.0
                 if (int(row[1]) > filters["EDateTime"]) and \
                     (int(row[1]) < filters["LDateTime"]) and \
@@ -43,7 +43,7 @@ def SavePrettyData(path, data):
 
         def MakeRow( x ):
             row = []
-            speed = 0.0001 / float(x[4]) * 1000.0 * 3600.0
+            speed = 0.0001 / float(x[4]) * 1000.0 * 1000.0 * 3600.0
             length = float(speed) * float(x[3]) / 100.0
             row.append(x[0])
             row.append(datetime.datetime.fromtimestamp(int(x[1])).strftime('%Y-%m-%d %H:%M:%S'))
