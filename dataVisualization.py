@@ -1,11 +1,14 @@
 import csv
 import numpy as np
 import pyqtgraph as pg
+import pyqtgraph.exporters
 import datetime
 
 
 def SaveGraph(fileName, pyqtwidget):
     exporter = pg.exporters.ImageExporter(pyqtwidget.plotItem)
+    exporter.params.param('width').setValue(1920, blockSignal=exporter.widthChanged)
+    exporter.params.param('height').setValue(1080, blockSignal=exporter.heightChanged)
     exporter.export(fileName)
 
 def plotGraph(func):
@@ -81,8 +84,8 @@ def heightPerLength(files, plotwidget, hour):
             for row in csvreader:
                 speed = 0.0001 / float(row[4]) * 1000.0 * 1000.0 * 3600.0
                 length = float(speed) * float(row[3]) / 100.0
-                x.append(row[5])
-                y.append(length)
+                x.append(length)
+                y.append(row[5])
     return x, y, "Length of Cars", "cm", "Ground Clearance", "cm", "Ground Clearance per Car Length", None
 
 @plotGraph
@@ -95,8 +98,8 @@ def speedPerLength(files, plotwidget, hour):
             for row in csvreader:
                 speed = 0.0001 / float(row[4]) * 1000.0 * 1000.0 * 3600.0
                 length = float(speed) * float(row[3]) / 100.0
-                x.append(speed)
-                y.append(length)
+                x.append(length)
+                y.append(speed)
     return x, y, "Length of Cars", "cm", "Speed", "kmh", "Car Speed per Car Length", None
 
 @plotGraph
@@ -130,13 +133,13 @@ def speedDistribution(files, plotwidget, hour):
         with open(file, 'rU') as f:
             csvreader = csv.reader(f, quoting=csv.QUOTE_ALL, delimiter=',')
             for row in csvreader:
-                speed = 0.0001 / float(row[4]) * 1000.0 * 1000.0 * 3600.0
+                speed = int(0.0001 / float(row[4]) * 1000.0 * 1000.0 * 3600.0)
                 t = datetime.datetime.fromtimestamp((int(row[1]) / 3600) * 3600).hour
                 if t == hour:
                     if speed in graphDict:
-                        graphDict[t] += 1
+                        graphDict[speed] += 1
                     else:
-                        graphDict[t] = 1
+                        graphDict[speed] = 1
     x = []
     y = []
     keylist = graphDict.keys()
