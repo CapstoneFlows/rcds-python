@@ -22,12 +22,15 @@ def ProcessData(path, files, filters):
                     (speed < filters["MaxS"]) and \
                     (length > filters["MinCML"]) and \
                     (length < filters["MaxCML"]):
+                        formatRow = [row[0], int(row[1]), int(row[2]), int(row[3]), int(row[4]), int(row[5])]
                         if filterData is None:
-                            filterData = np.array(row).astype(int)
+                            filterData = np.array([formatRow])
                         else:
-                            filterData = np.vstack((filterData, np.array(row).astype(int))) 
-    filterData = json.dumps(filterData.tolist()).replace('],', '],\n')
-    return filterData
+                            filterData = np.vstack((filterData, np.array(formatRow))) 
+    if filterData is not None:
+        filterData = json.dumps(filterData.tolist()).replace('],', '],\n')
+        return filterData
+
 
 def SaveData(path, data):
     data = np.array(json.loads(data.replace ('],\n', '],')))

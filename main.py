@@ -284,7 +284,8 @@ class RCDSTool(QtGui.QMainWindow):
     def ShowFilteredData(self):
         selectedFiles = [str(x.text()) for x in self.ui.FilterFileListWidget.selectedItems()]
         filterData = df.ProcessData(self.filter_path, selectedFiles, self.GetFilters())
-        self.ui.DataPlainTextEdit.setPlainText(filterData)
+        if filterData is not None:
+            self.ui.DataPlainTextEdit.setPlainText(filterData)
 
     def SaveFilteredData(self):
         name = str(QtGui.QFileDialog.getSaveFileName(self, "Save Filtered Data File", self.filter_path, selectedFilter='*.csv'))
@@ -432,12 +433,38 @@ class RCDSTool(QtGui.QMainWindow):
     def ClearDevices(self):
         self.idsIn = {}
         self.idsOut = {}
+        self.ui.EWnumlabel.setText("0")
+        self.ui.ENnumlabel.setText("0")
+        self.ui.ESnumlabel.setText("0")
+        self.ui.WEnumlabel.setText("0")
+        self.ui.WSnumlabel.setText("0")
+        self.ui.WNnumlabel.setText("0")
+        self.ui.NSnumlabel.setText("0")
+        self.ui.NWnumlabel.setText("0")
+        self.ui.NEnumlabel.setText("0")
+        self.ui.SNnumlabel.setText("0")
+        self.ui.SEnumlabel.setText("0")
+        self.ui.SWnumlabel.setText("0")
+        self.ui.unknownnumlabel.setText("0")
+        self.SetNoSensor(self.ui.nInComboBox)
+        self.SetNoSensor(self.ui.eInComboBox)
+        self.SetNoSensor(self.ui.sInComboBox)
+        self.SetNoSensor(self.ui.wInComboBox)
+        self.SetNoSensor(self.ui.nOutComboBox)
+        self.SetNoSensor(self.ui.eOutComboBox)
+        self.SetNoSensor(self.ui.sOutComboBox)
+        self.SetNoSensor(self.ui.wOutComboBox)
         self.ui.nCheck.setCheckState(QtCore.Qt.Unchecked)
         self.ui.eCheck.setCheckState(QtCore.Qt.Unchecked)
         self.ui.sCheck.setCheckState(QtCore.Qt.Unchecked)
         self.ui.wCheck.setCheckState(QtCore.Qt.Unchecked)
         self.ui.CompileButton.setDisabled(True)
         self.ui.MapSaveButton.setDisabled(True)
+
+    def SetNoSensor(self, combobox):
+        index = combobox.findText("No Sensor", QtCore.Qt.MatchFixedString)
+        if index >= 0:
+             combobox.setCurrentIndex(index)
 
 ###############################################################################
 

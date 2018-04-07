@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'rcdsWindow.ui'
 #
-# Created by: PyQt4 UI code generator 4.12.1
+# Created by: PyQt4 UI code generator 4.11.4
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -38,7 +38,6 @@ class Ui_MainWindow(object):
         self.SensorTab = QtGui.QWidget()
         self.SensorTab.setObjectName(_fromUtf8("SensorTab"))
         self.gridLayout_2 = QtGui.QGridLayout(self.SensorTab)
-        self.gridLayout_2.setMargin(0)
         self.gridLayout_2.setObjectName(_fromUtf8("gridLayout_2"))
         self.verticalLayout_2 = QtGui.QVBoxLayout()
         self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))
@@ -144,7 +143,6 @@ class Ui_MainWindow(object):
         self.FilterTab = QtGui.QWidget()
         self.FilterTab.setObjectName(_fromUtf8("FilterTab"))
         self.gridLayout_7 = QtGui.QGridLayout(self.FilterTab)
-        self.gridLayout_7.setMargin(0)
         self.gridLayout_7.setObjectName(_fromUtf8("gridLayout_7"))
         self.horizontalLayout_5 = QtGui.QHBoxLayout()
         self.horizontalLayout_5.setObjectName(_fromUtf8("horizontalLayout_5"))
@@ -190,7 +188,7 @@ class Ui_MainWindow(object):
         self.MaxTOLabel.setObjectName(_fromUtf8("MaxTOLabel"))
         self.gridLayout_5.addWidget(self.MaxTOLabel, 3, 0, 1, 1)
         self.MinCMHSpinBox = QtGui.QSpinBox(self.FilterTab)
-        self.MinCMHSpinBox.setMinimum(10)
+        self.MinCMHSpinBox.setMinimum(0)
         self.MinCMHSpinBox.setMaximum(40)
         self.MinCMHSpinBox.setObjectName(_fromUtf8("MinCMHSpinBox"))
         self.gridLayout_5.addWidget(self.MinCMHSpinBox, 5, 1, 1, 1)
@@ -198,7 +196,7 @@ class Ui_MainWindow(object):
         self.MaxCMHLabel.setObjectName(_fromUtf8("MaxCMHLabel"))
         self.gridLayout_5.addWidget(self.MaxCMHLabel, 6, 0, 1, 1)
         self.MaxCMHSpinBox = QtGui.QSpinBox(self.FilterTab)
-        self.MaxCMHSpinBox.setMinimum(10)
+        self.MaxCMHSpinBox.setMinimum(0)
         self.MaxCMHSpinBox.setMaximum(40)
         self.MaxCMHSpinBox.setProperty("value", 40)
         self.MaxCMHSpinBox.setObjectName(_fromUtf8("MaxCMHSpinBox"))
@@ -207,12 +205,16 @@ class Ui_MainWindow(object):
         self.MinCMLLabel.setObjectName(_fromUtf8("MinCMLLabel"))
         self.gridLayout_5.addWidget(self.MinCMLLabel, 7, 0, 1, 1)
         self.MinCMLSpinBox = QtGui.QSpinBox(self.FilterTab)
+        self.MinCMLSpinBox.setMinimum(0)
+        self.MinCMLSpinBox.setMaximum(9999)
+        self.MinCMLSpinBox.setProperty("value", 0)
         self.MinCMLSpinBox.setObjectName(_fromUtf8("MinCMLSpinBox"))
         self.gridLayout_5.addWidget(self.MinCMLSpinBox, 7, 1, 1, 1)
         self.MaxCMLLabel = QtGui.QLabel(self.FilterTab)
         self.MaxCMLLabel.setObjectName(_fromUtf8("MaxCMLLabel"))
         self.gridLayout_5.addWidget(self.MaxCMLLabel, 8, 0, 1, 1)
         self.MaxCMLSpinBox = QtGui.QSpinBox(self.FilterTab)
+        self.MaxCMLSpinBox.setMinimum(0)
         self.MaxCMLSpinBox.setMaximum(9999)
         self.MaxCMLSpinBox.setProperty("value", 9999)
         self.MaxCMLSpinBox.setObjectName(_fromUtf8("MaxCMLSpinBox"))
@@ -277,7 +279,6 @@ class Ui_MainWindow(object):
         self.DataTab = QtGui.QWidget()
         self.DataTab.setObjectName(_fromUtf8("DataTab"))
         self.gridLayout_4 = QtGui.QGridLayout(self.DataTab)
-        self.gridLayout_4.setMargin(0)
         self.gridLayout_4.setObjectName(_fromUtf8("gridLayout_4"))
         self.horizontalLayout_3 = QtGui.QHBoxLayout()
         self.horizontalLayout_3.setObjectName(_fromUtf8("horizontalLayout_3"))
@@ -357,7 +358,6 @@ class Ui_MainWindow(object):
         self.MapTab = QtGui.QWidget()
         self.MapTab.setObjectName(_fromUtf8("MapTab"))
         self.horizontalLayout_6 = QtGui.QHBoxLayout(self.MapTab)
-        self.horizontalLayout_6.setMargin(0)
         self.horizontalLayout_6.setObjectName(_fromUtf8("horizontalLayout_6"))
         self.horizontalLayout_9 = QtGui.QHBoxLayout()
         self.horizontalLayout_9.setObjectName(_fromUtf8("horizontalLayout_9"))
